@@ -5,8 +5,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import env from './config/env';
-import { User } from './entities/user';
+import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
+import { HasherModule } from './hasher/hasher.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { UserModule } from './user/user.module';
       }),
       inject: [ConfigService],
     }),
+    HasherModule,
   ],
   controllers: [AppController],
   providers: [AppService],
