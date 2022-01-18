@@ -1,10 +1,9 @@
 {
-  "name": "backend",
+  "name": "winer-backend",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Winer REST APIs",
+  "author": "Giovanni Prisco",
   "private": true,
-  "license": "UNLICENSED",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
