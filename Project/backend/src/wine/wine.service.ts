@@ -19,14 +19,22 @@ export class WineService {
 
   async findAll(filterWines: FilterWine) {
     try {
-      const skip = filterWines.page * pageSize;
+      const dbPage = +filterWines.page - 1;
+      const skip = dbPage * pageSize;
+
       const [wines, totalWines] = await this.wineRepository.findAndCount({
         take: pageSize,
         skip,
         relations: ['winegrapes', 'winefamily', 'winery'],
       });
 
-      return { totalWines, position: skip + wines.length, wines };
+      return {
+        totalWines,
+        position: skip + wines.length,
+        pageSize,
+        currentPage: +filterWines.page,
+        wines,
+      };
     } catch (error) {
       throw error;
     }
