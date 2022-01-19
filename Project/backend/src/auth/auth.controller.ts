@@ -6,7 +6,6 @@ import {
   Inject,
   Get,
   Body,
-  UnauthorizedException,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
