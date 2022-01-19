@@ -8,6 +8,7 @@ import env from './config/env';
 import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
 import { HasherModule } from './hasher/hasher.module';
+import { Role } from './user/role.entity';
 
 @Module({
   imports: [
@@ -27,8 +28,9 @@ import { HasherModule } from './hasher/hasher.module';
         username: configService.get('db.user'),
         password: configService.get('db.password'),
         database: configService.get('db.schema'),
-        entities: [User],
+        entities: [User, Role],
         synchronize: false,
+        debug: configService.get('db.debug'),
       }),
       inject: [ConfigService],
     }),

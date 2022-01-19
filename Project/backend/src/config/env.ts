@@ -5,6 +5,7 @@ export default () => ({
     schema: process.env.DB_SCHEMA || 'winer',
     user: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD,
+    debug: process.env.NODE_ENV.toLowerCase() === 'development',
   },
   jwt: {
     secret: process.env.secret || 'default-secret',

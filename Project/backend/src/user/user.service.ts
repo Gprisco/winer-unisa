@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUserDto } from 'src/auth/dto/createUser.dto';
+import { CreateUserDto } from 'src/auth/dto/CreateUser.dto';
 import { HasherService } from 'src/hasher/hasher.service';
 import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
+import { PlatformRole, Role } from './role.entity';
 
 export interface GetUserResponse {
   success: boolean;
@@ -22,6 +23,8 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Role)
+    private roleRepository: Repository<Role>,
     private hasherService: HasherService,
   ) {}
 
@@ -31,14 +34,14 @@ export class UserService {
 
   async getUserByEmail(email: string): Promise<GetUserResponse> {
     try {
-      const user = await this.userRepository.find({
+      const user = await this.userRepository.findOne({
         where: { email },
-        take: 1,
+        relations: ['roles'],
       });
 
-      if (user.length > 0) return { success: true, user: user[0] };
+      if (!user) return { success: false };
 
-      return { success: false };
+      return { success: true, user };
     } catch (error) {
       return { success: false, error };
     }
@@ -52,6 +55,22 @@ export class UserService {
         email: user.email,
         password: hash,
       });
+
+      let defaultRole = await this.roleRepository.findOne({
+        where: { roleName: PlatformRole.DEF },
+      });
+
+      if (!defaultRole) {
+        defaultRole = this.roleRepository.create({
+          roleName: PlatformRole.DEF,
+          roleDescription: '',
+        });
+
+        await this.roleRepository.save(defaultRole);
+      }
+
+      createdUser.roles = [defaultRole];
+
       await this.userRepository.save(createdUser);
 
       return { success: true, user: createdUser };
