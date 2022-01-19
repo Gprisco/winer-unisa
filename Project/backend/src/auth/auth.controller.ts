@@ -10,7 +10,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 import { User } from 'src/user/user.entity';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
@@ -20,6 +20,7 @@ import { UserPayloadDto } from './dto/UserPayload.dto';
 import { JwtAuthGuard } from './guard/jwt';
 
 @Controller('auth')
+@ApiTags('Auth')
 export class AuthController {
   @Inject()
   private authService: AuthService;
