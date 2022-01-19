@@ -7,12 +7,14 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { WineService } from './wine.service';
 import { CreateWineDto } from './dto/create-wine.dto';
 import { UpdateWineDto } from './dto/update-wine.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guard/jwt';
+import { FilterWine } from './dto/filter-wine.dto';
 
 @Controller('wine')
 @ApiTags('Wine')
@@ -27,8 +29,8 @@ export class WineController {
   }
 
   @Get()
-  findAll() {
-    return this.wineService.findAll({ page: 1 });
+  findAll(@Query() query: FilterWine) {
+    return this.wineService.findAll(query);
   }
 
   @Get(':id')
