@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import env from './config/env';
 import { UserModule } from './user/user.module';
 import { HasherModule } from './hasher/hasher.module';
-import { WineModule } from './wine/wine.module';
 import { join } from 'path';
+import { WineModule } from './wine/wine.module';
 
 @Module({
   imports: [
