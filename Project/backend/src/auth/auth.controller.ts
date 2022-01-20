@@ -6,7 +6,6 @@ import {
   Inject,
   Get,
   Body,
-  UnauthorizedException,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -38,16 +37,8 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Get('profile')
-  async getProfile(@Request() req: Express.Request) {
-    const userResponse = await this.userService.getUserByEmail(
-      (req.user as UserPayloadDto).email,
-    );
-
-    if (!userResponse.success) throw new UnauthorizedException();
-
-    const { password: _, ...user } = userResponse.user;
-
-    return user;
+  getProfile(@Request() req: Express.Request): UserPayloadDto {
+    return req.user as UserPayloadDto;
   }
 
   @Post('register')

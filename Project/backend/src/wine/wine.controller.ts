@@ -7,12 +7,14 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { WineService } from './wine.service';
 import { CreateWineDto } from './dto/create-wine.dto';
 import { UpdateWineDto } from './dto/update-wine.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guard/jwt';
+import { FilterWine } from './dto/filter-wine.dto';
 
 @Controller('wine')
 @ApiTags('Wine')
@@ -27,26 +29,33 @@ export class WineController {
   }
 
   @Get()
-  findAll() {
-    return this.wineService.findAll({ page: 1 });
+  findAll(@Query() query: FilterWine) {
+    return this.wineService.findAll(query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.wineService.findOne(+id);
+  @Get(':wine/:vintage')
+  async findOne(
+    @Param('wine') wine: string,
+    @Param('vintage') vintage: number,
+  ) {
+    return await this.wineService.findOne(wine, +vintage);
   }
 
-  @Patch(':id')
+  @Patch(':wine/:vintage')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  update(@Param('id') id: string, @Body() updateWineDto: UpdateWineDto) {
-    return this.wineService.update(+id, updateWineDto);
+  update(
+    @Param('wine') wine: string,
+    @Param('vintage') vintage: number,
+    @Body() updateWineDto: UpdateWineDto,
+  ) {
+    return this.wineService.update(wine, +vintage, updateWineDto);
   }
 
-  @Delete(':id')
+  @Delete(':wine/:vintage')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  remove(@Param('id') id: string) {
-    return this.wineService.remove(+id);
+  remove(@Param('wine') wine: string, @Param('vintage') vintage: number) {
+    return this.wineService.remove(wine, +vintage);
   }
 }

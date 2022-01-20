@@ -1,10 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateWineDto } from './dto/create-wine.dto';
-import { FilterWineDto } from './dto/filter-wine.dto';
+import { FilterWine } from './dto/filter-wine.dto';
 import { UpdateWineDto } from './dto/update-wine.dto';
 import { Wine } from './entities/wine.entity';
+import { WineWinegrapeService } from 'src/wine-winegrape/wine-winegrape.service';
+import { FilterWinesHelper } from './filter-wine.helper';
 
 const pageSize = 50;
 
@@ -13,33 +15,122 @@ export class WineService {
   @InjectRepository(Wine)
   private wineRepository: Repository<Wine>;
 
-  create(createWineDto: CreateWineDto) {
-    return 'This action adds a new wine';
-  }
+  @Inject()
+  private wineWinegrapeService: WineWinegrapeService;
 
-  async findAll(filterWines: FilterWineDto) {
+  @Inject()
+  private filterWinesHelper: FilterWinesHelper;
+
+  async create(createWineDto: CreateWineDto) {
     try {
-      const wines = await this.wineRepository.find({
-        take: pageSize,
-        skip: filterWines.page * pageSize,
-        relations: ['winegrapes', 'winefamily', 'winery'],
-      });
+      const { winegrapes, ...wineData } = createWineDto;
 
-      return wines;
+      const wineWinegrapes =
+        await this.wineWinegrapeService.createWineWinegrapes(
+          {
+            wine: wineData.wine,
+            vintage: wineData.vintage,
+          },
+          winegrapes,
+        );
+
+      const wine = this.wineRepository.create(wineData);
+      wine.winegrapes = wineWinegrapes;
+
+      await this.wineRepository.save(wine);
     } catch (error) {
       throw error;
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} wine`;
+  async findAll(filterWines: FilterWine) {
+    try {
+      const dbPage = +filterWines.page - 1;
+      const skip = dbPage * pageSize;
+
+      const where = this.filterWinesHelper.buildFilterWineQuery(filterWines);
+
+      const [wines, totalWines] = await this.wineRepository.findAndCount({
+        take: pageSize,
+        skip,
+        relations: ['winegrapes', 'winefamily', 'winery'],
+        where,
+      });
+
+      return {
+        totalWines,
+        position: skip + wines.length,
+        pageSize,
+        currentPage: +filterWines.page,
+        wines,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
-  update(id: number, updateWineDto: UpdateWineDto) {
-    return `This action updates a #${id} wine`;
+  async findOne(wine: string, vintage: number) {
+    try {
+      const foundWine = await this.wineRepository.findOne(
+        { wine, vintage },
+        {
+          relations: [
+            'winery',
+            'winefamily',
+            'winefamily.winecolor',
+            'winefamily.winetype',
+            'winefamily.winedenom',
+            'winefamily.region',
+            'winefamily.region.country',
+            'winegrapes',
+          ],
+        },
+      );
+
+      if (!foundWine) throw new NotFoundException();
+
+      return foundWine;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} wine`;
+  async update(wine: string, vintage: number, updateWineDto: UpdateWineDto) {
+    try {
+      const foundWine = await this.wineRepository.findOne({ wine, vintage });
+      if (!foundWine) throw new NotFoundException();
+
+      const { winegrapes, ...wineData } = updateWineDto;
+
+      Object.keys(wineData).forEach((key: keyof typeof wineData) => {
+        foundWine[key] = updateWineDto[key] as never;
+      });
+
+      if (winegrapes) {
+        const wineWinegrapes =
+          await this.wineWinegrapeService.createWineWinegrapes(
+            {
+              wine,
+              vintage,
+            },
+            winegrapes,
+            true,
+          );
+
+        foundWine.winegrapes = wineWinegrapes;
+      }
+
+      return this.wineRepository.save(foundWine);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async remove(wine: string, vintage: number) {
+    try {
+      return await this.wineRepository.delete({ wine, vintage });
+    } catch (error) {
+      throw error;
+    }
   }
 }
