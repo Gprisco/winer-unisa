@@ -133,4 +133,20 @@ export class WineService {
       throw error;
     }
   }
+
+  async checkAvailability(
+    wine: string,
+    vintage: number,
+    quantity: number,
+  ): Promise<[Wine, boolean]> {
+    try {
+      const dbWine = await this.findOne(wine, vintage);
+
+      if (!dbWine) throw new NotFoundException();
+
+      return [dbWine, dbWine.availability >= quantity];
+    } catch (error) {
+      throw error;
+    }
+  }
 }

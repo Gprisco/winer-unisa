@@ -11,6 +11,7 @@ import { join } from 'path';
 import { WineModule } from './wine/wine.module';
 import { WineWinegrapeModule } from './wine-winegrape/wine-winegrape.module';
 import { AppLoggerMiddleware } from './middlewares/logger.middleware';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { AppLoggerMiddleware } from './middlewares/logger.middleware';
     HasherModule,
     WineModule,
     WineWinegrapeModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],

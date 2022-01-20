@@ -11,12 +11,6 @@ import * as bcrypt from 'bcrypt';
     },
     HasherService,
   ],
-  exports: [
-    HasherService,
-    {
-      provide: 'HASH_ALGO',
-      useValue: bcrypt,
-    },
-  ],
+  exports: [HasherService],
 })
 export class HasherModule {}
