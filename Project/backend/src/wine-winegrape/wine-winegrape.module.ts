@@ -6,6 +6,6 @@ import { WineWinegrapeService } from './wine-winegrape.service';
 @Module({
   imports: [TypeOrmModule.forFeature([WineWinegrape])],
   providers: [WineWinegrapeService],
-  exports: [TypeOrmModule.forFeature([WineWinegrape]), WineWinegrapeService],
+  exports: [WineWinegrapeService],
 })
 export class WineWinegrapeModule {}

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AssociateWineWinegrapeDto } from './associate-wine-winegrape.dto';
-import { IsString, IsInt, IsArray, IsNumber } from 'class-validator';
+import { IsString, IsInt, IsArray, IsNumber, Min } from 'class-validator';
 
 export class CreateWineDto {
   @ApiProperty({
@@ -17,6 +17,7 @@ export class CreateWineDto {
     required: true,
   })
   @IsInt()
+  @Min(0)
   vintage: number;
 
   @ApiProperty({
@@ -25,6 +26,7 @@ export class CreateWineDto {
     required: true,
   })
   @IsInt()
+  @Min(1)
   winefamilyId: number;
 
   @ApiProperty({
@@ -33,6 +35,7 @@ export class CreateWineDto {
     required: true,
   })
   @IsInt()
+  @Min(1)
   wineryId: number;
 
   @ApiProperty({
@@ -50,6 +53,7 @@ export class CreateWineDto {
     required: true,
   })
   @IsNumber()
+  @Min(0.01)
   price: number;
 
   @ApiProperty({
@@ -58,5 +62,6 @@ export class CreateWineDto {
     required: true,
   })
   @IsInt()
+  @Min(0)
   availability: number;
 }
