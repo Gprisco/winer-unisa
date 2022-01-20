@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsInt, IsNotEmpty } from 'class-validator';
 
 export class AssociateWineWinegrapeDto {
   @ApiProperty({
@@ -6,6 +7,8 @@ export class AssociateWineWinegrapeDto {
     description: 'The winegrapeId to associate',
     required: true,
   })
+  @IsInt()
+  @IsNotEmpty()
   winegrapeId: number;
 
   @ApiProperty({
@@ -13,5 +16,7 @@ export class AssociateWineWinegrapeDto {
     description: 'The percentage of the winegrape',
     required: true,
   })
+  @IsInt()
+  @IsNotEmpty()
   percentage: number;
 }

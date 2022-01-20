@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { AssociateWineWinegrapeDto } from './associate-wine-winegrape.dto';
+import {
+  IsString,
+  IsInt,
+  IsNotEmpty,
+  IsArray,
+  IsNumber,
+} from 'class-validator';
 
 export class CreateWineDto {
   @ApiProperty({
@@ -7,6 +14,8 @@ export class CreateWineDto {
     description: 'The name of the wine',
     required: true,
   })
+  @IsString()
+  @IsNotEmpty()
   wine: string;
 
   @ApiProperty({
@@ -14,6 +23,8 @@ export class CreateWineDto {
     description: 'The vintage of the wine',
     required: true,
   })
+  @IsInt()
+  @IsNotEmpty()
   vintage: number;
 
   @ApiProperty({
@@ -21,6 +32,8 @@ export class CreateWineDto {
     description: 'The ID of the winefamily of the wine',
     required: true,
   })
+  @IsInt()
+  @IsNotEmpty()
   winefamilyId: number;
 
   @ApiProperty({
@@ -28,6 +41,8 @@ export class CreateWineDto {
     description: 'The ID of the winery which produced the wine',
     required: true,
   })
+  @IsInt()
+  @IsNotEmpty()
   wineryId: number;
 
   @ApiProperty({
@@ -36,6 +51,7 @@ export class CreateWineDto {
     required: true,
     type: [AssociateWineWinegrapeDto],
   })
+  @IsArray()
   winegrapes: AssociateWineWinegrapeDto[];
 
   @ApiProperty({
@@ -43,6 +59,8 @@ export class CreateWineDto {
     description: 'The price of the wine',
     required: true,
   })
+  @IsNumber()
+  @IsNotEmpty()
   price: number;
 
   @ApiProperty({
@@ -50,5 +68,7 @@ export class CreateWineDto {
     description: 'The number of available wine bottles to sell',
     required: true,
   })
+  @IsInt()
+  @IsNotEmpty()
   availability: number;
 }

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsInt, IsString, IsNumber, IsNotEmpty } from 'class-validator';
 
 export class FilterWine {
   @ApiProperty({
@@ -6,6 +7,7 @@ export class FilterWine {
     description: 'The name of the wine',
     required: false,
   })
+  @IsString()
   wine: string;
 
   @ApiProperty({
@@ -13,6 +15,7 @@ export class FilterWine {
     description: 'The vintage of the wine',
     required: false,
   })
+  @IsInt()
   vintage: number;
 
   @ApiProperty({
@@ -20,6 +23,7 @@ export class FilterWine {
     description: 'The ID of the winefamily of the wine',
     required: false,
   })
+  @IsInt()
   winefamilyId: number;
 
   @ApiProperty({
@@ -27,6 +31,7 @@ export class FilterWine {
     description: 'The ID of the winery which produced the wine',
     required: false,
   })
+  @IsInt()
   wineryId: number;
 
   @ApiProperty({
@@ -34,6 +39,7 @@ export class FilterWine {
     description: 'The price of the wine',
     required: false,
   })
+  @IsNumber()
   price: number;
 
   @ApiProperty({
@@ -41,6 +47,7 @@ export class FilterWine {
     description: 'The number of available wine bottles to sell',
     required: false,
   })
+  @IsInt()
   availability: number;
 
   @ApiProperty({
@@ -48,5 +55,7 @@ export class FilterWine {
     description: 'The page to get (starting from 0)',
     required: true,
   })
+  @IsInt()
+  @IsNotEmpty()
   page: number;
 }

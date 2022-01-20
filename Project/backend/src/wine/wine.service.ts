@@ -99,17 +99,20 @@ export class WineService {
         foundWine[key] = updateWineDto[key] as never;
       });
 
-      const wineWinegrapes =
-        await this.wineWinegrapeService.createWineWinegrapes(
-          {
-            wine: wineData.wine,
-            vintage: wineData.vintage,
-          },
-          winegrapes,
-          true,
-        );
+      if (winegrapes) {
+        const wineWinegrapes =
+          await this.wineWinegrapeService.createWineWinegrapes(
+            {
+              wine,
+              vintage,
+            },
+            winegrapes,
+            true,
+          );
 
-      foundWine.winegrapes = wineWinegrapes;
+        foundWine.winegrapes = wineWinegrapes;
+      }
+
       return this.wineRepository.save(foundWine);
     } catch (error) {
       throw error;
