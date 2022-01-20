@@ -28,9 +28,9 @@ export class CartService {
       );
 
       if (!isAvailable)
-        throw new BadRequestException(
+        throw new BadRequestException([
           `La quantità selezionata supera la disponibilità del vino, bottiglie disponibili ${wine.availability}`,
-        );
+        ]);
 
       const newCartItem = this.cartItemRepository.create({
         ...createCartDto,
@@ -64,6 +64,17 @@ export class CartService {
       });
 
       if (!cartItem) throw new NotFoundException();
+
+      const [foundWine, isAvailable] = await this.wineService.checkAvailability(
+        wine,
+        vintage,
+        updateCartDto.quantity,
+      );
+
+      if (!isAvailable)
+        throw new BadRequestException([
+          `La quantità selezionata supera la disponibilità del vino, bottiglie disponibili: ${foundWine.availability}`,
+        ]);
 
       if (!isNaN(updateCartDto.quantity))
         cartItem.quantity = updateCartDto.quantity;

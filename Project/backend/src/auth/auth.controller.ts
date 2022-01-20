@@ -45,7 +45,7 @@ export class AuthController {
   async createUser(@Body() user: CreateUserDto) {
     const createUserResponse = await this.authService.register(user);
 
-    if (!createUserResponse.success) return new InternalServerErrorException();
+    if (!createUserResponse.success) throw new InternalServerErrorException();
 
     return;
   }
