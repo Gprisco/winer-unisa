@@ -12,6 +12,8 @@ import { WineModule } from './wine/wine.module';
 import { WineWinegrapeModule } from './wine-winegrape/wine-winegrape.module';
 import { AppLoggerMiddleware } from './middlewares/logger.middleware';
 import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
+import { HelpersModule } from './helpers/helpers.module';
 
 @Module({
   imports: [
@@ -40,6 +42,8 @@ import { CartModule } from './cart/cart.module';
     WineModule,
     WineWinegrapeModule,
     CartModule,
+    OrderModule,
+    HelpersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

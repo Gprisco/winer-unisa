@@ -7,8 +7,7 @@ import { UpdateWineDto } from './dto/update-wine.dto';
 import { Wine } from './entities/wine.entity';
 import { WineWinegrapeService } from 'src/wine-winegrape/wine-winegrape.service';
 import { FilterWinesHelper } from './filter-wine.helper';
-
-const pageSize = 50;
+import { PaginationService } from 'src/helpers/pagination.service';
 
 @Injectable()
 export class WineService {
@@ -20,6 +19,9 @@ export class WineService {
 
   @Inject()
   private filterWinesHelper: FilterWinesHelper;
+
+  @Inject()
+  private paginationService: PaginationService;
 
   async create(createWineDto: CreateWineDto) {
     try {
@@ -45,25 +47,13 @@ export class WineService {
 
   async findAll(filterWines: FilterWine) {
     try {
-      const dbPage = +filterWines.page - 1;
-      const skip = dbPage * pageSize;
-
       const where = this.filterWinesHelper.buildFilterWineQuery(filterWines);
 
-      const [wines, totalWines] = await this.wineRepository.findAndCount({
-        take: pageSize,
-        skip,
-        relations: ['winegrapes', 'winefamily', 'winery'],
-        where,
-      });
-
-      return {
-        totalWines,
-        position: skip + wines.length,
-        pageSize,
-        currentPage: +filterWines.page,
-        wines,
-      };
+      return this.paginationService.paginate(
+        filterWines.page,
+        this.wineRepository,
+        { where, relations: ['winegrapes', 'winefamily', 'winery'] },
+      );
     } catch (error) {
       throw error;
     }

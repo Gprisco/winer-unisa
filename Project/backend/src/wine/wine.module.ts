@@ -5,9 +5,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Wine } from './entities/wine.entity';
 import { WineWinegrapeModule } from 'src/wine-winegrape/wine-winegrape.module';
 import { FilterWinesHelper } from './filter-wine.helper';
+import { HelpersModule } from 'src/helpers/helpers.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Wine]), WineWinegrapeModule],
+  imports: [
+    TypeOrmModule.forFeature([Wine]),
+    WineWinegrapeModule,
+    HelpersModule,
+  ],
   controllers: [WineController],
   providers: [WineService, FilterWinesHelper],
   exports: [WineService],

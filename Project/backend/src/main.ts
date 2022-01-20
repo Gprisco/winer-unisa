@@ -11,9 +11,13 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Winer API')
-    .setDescription('Winer API description')
+    .setDescription(pjson.description)
     .setVersion(pjson.version)
     .addBearerAuth()
+    .setLicense(
+      'GNU General Public License v3.0',
+      'https://raw.githubusercontent.com/Gprisco/winer-unisa/master/LICENSE',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
