@@ -170,7 +170,7 @@ create table w_wine
     wineryId     int          not null,
     winefamilyId int          not null,
     availability int          not null,
-    price        int unsigned not null,
+    price        float        not null,
     primary key (wine, vintage),
     constraint w_wine_ibfk_1
         foreign key (wineryId) references w_winery (wineryId)
