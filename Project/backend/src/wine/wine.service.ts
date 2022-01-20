@@ -6,6 +6,7 @@ import { FilterWine } from './dto/filter-wine.dto';
 import { UpdateWineDto } from './dto/update-wine.dto';
 import { Wine } from './entities/wine.entity';
 import { WineWinegrapeService } from 'src/wine-winegrape/wine-winegrape.service';
+import { FilterWinesHelper } from './filter-wine.helper';
 
 const pageSize = 50;
 
@@ -16,6 +17,9 @@ export class WineService {
 
   @Inject()
   private wineWinegrapeService: WineWinegrapeService;
+
+  @Inject()
+  private filterWinesHelper: FilterWinesHelper;
 
   async create(createWineDto: CreateWineDto) {
     try {
@@ -44,10 +48,13 @@ export class WineService {
       const dbPage = +filterWines.page - 1;
       const skip = dbPage * pageSize;
 
+      const where = this.filterWinesHelper.buildFilterWineQuery(filterWines);
+
       const [wines, totalWines] = await this.wineRepository.findAndCount({
         take: pageSize,
         skip,
         relations: ['winegrapes', 'winefamily', 'winery'],
+        where,
       });
 
       return {

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsString, IsNumber, IsNotEmpty } from 'class-validator';
+import { IsInt, IsString, IsNumber, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
 
 export class FilterWine {
   @ApiProperty({
@@ -8,7 +9,8 @@ export class FilterWine {
     required: false,
   })
   @IsString()
-  wine: string;
+  @IsOptional()
+  wine?: string;
 
   @ApiProperty({
     name: 'vintage',
@@ -16,46 +18,66 @@ export class FilterWine {
     required: false,
   })
   @IsInt()
-  vintage: number;
+  @Type(() => Number)
+  @IsOptional()
+  vintage?: number;
 
   @ApiProperty({
     name: 'winefamilyId',
     description: 'The ID of the winefamily of the wine',
     required: false,
   })
+  @Type(() => Number)
   @IsInt()
-  winefamilyId: number;
+  @IsOptional()
+  winefamilyId?: number;
 
   @ApiProperty({
     name: 'wineryId',
     description: 'The ID of the winery which produced the wine',
     required: false,
   })
+  @Type(() => Number)
   @IsInt()
-  wineryId: number;
+  @IsOptional()
+  wineryId?: number;
 
   @ApiProperty({
-    name: 'price',
-    description: 'The price of the wine',
+    name: 'priceMin',
+    description: 'The minimum price of the wine',
     required: false,
   })
+  @Type(() => Number)
   @IsNumber()
-  price: number;
+  @IsOptional()
+  priceMin?: number;
+
+  @ApiProperty({
+    name: 'priceMax',
+    description: 'The maximum price of the wine',
+    required: false,
+  })
+  @Type(() => Number)
+  @IsNumber()
+  @IsOptional()
+  priceMax?: number;
 
   @ApiProperty({
     name: 'availability',
     description: 'The number of available wine bottles to sell',
     required: false,
   })
+  @Type(() => Number)
   @IsInt()
-  availability: number;
+  @IsOptional()
+  availability?: number;
 
   @ApiProperty({
     name: 'page',
     description: 'The page to get (starting from 0)',
     required: true,
   })
+  @Type(() => Number)
   @IsInt()
-  @IsNotEmpty()
   page: number;
 }
