@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { Winefamily } from './winefamily.entity';
 import { Winery } from './winery.entity';
-import { WineWinegrape } from './wineWinegrape.entity';
+import { WineWinegrape } from '../../wine-winegrape/entities/wineWinegrape.entity';
 
 @Entity({ name: 'w_wine' })
 export class Wine {

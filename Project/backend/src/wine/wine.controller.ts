@@ -33,22 +33,29 @@ export class WineController {
     return this.wineService.findAll(query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.wineService.findOne(+id);
+  @Get(':wine/:vintage')
+  async findOne(
+    @Param('wine') wine: string,
+    @Param('vintage') vintage: number,
+  ) {
+    return await this.wineService.findOne(wine, +vintage);
   }
 
-  @Patch(':id')
+  @Patch(':wine/:vintage')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  update(@Param('id') id: string, @Body() updateWineDto: UpdateWineDto) {
-    return this.wineService.update(+id, updateWineDto);
+  update(
+    @Param('wine') wine: string,
+    @Param('vintage') vintage: number,
+    @Body() updateWineDto: UpdateWineDto,
+  ) {
+    return this.wineService.update(wine, +vintage, updateWineDto);
   }
 
-  @Delete(':id')
+  @Delete(':wine/:vintage')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  remove(@Param('id') id: string) {
-    return this.wineService.remove(+id);
+  remove(@Param('wine') wine: string, @Param('vintage') vintage: number) {
+    return this.wineService.remove(wine, +vintage);
   }
 }

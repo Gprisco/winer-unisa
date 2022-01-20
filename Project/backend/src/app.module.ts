@@ -9,6 +9,7 @@ import { UserModule } from './user/user.module';
 import { HasherModule } from './hasher/hasher.module';
 import { join } from 'path';
 import { WineModule } from './wine/wine.module';
+import { WineWinegrapeModule } from './wine-winegrape/wine-winegrape.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { WineModule } from './wine/wine.module';
     }),
     HasherModule,
     WineModule,
+    WineWinegrapeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

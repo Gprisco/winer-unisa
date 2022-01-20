@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Country } from './country.entity';
 
 @Entity({ name: 'g_region' })
@@ -10,5 +16,6 @@ export class Region {
   region: string;
 
   @ManyToOne(() => Country)
+  @JoinColumn({ name: 'countryId', referencedColumnName: 'countryId' })
   country: Country;
 }

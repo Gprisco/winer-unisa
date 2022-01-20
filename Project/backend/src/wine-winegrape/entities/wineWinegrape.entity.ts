@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
-import { Wine } from './wine.entity';
-import { Winegrape } from './winegrape.entity';
+import { Wine } from '../../wine/entities/wine.entity';
+import { Winegrape } from '../../wine/entities/winegrape.entity';
 
 @Entity({ name: 'w_wine_winegrape' })
 export class WineWinegrape {
@@ -18,7 +18,7 @@ export class WineWinegrape {
   @JoinColumn({ name: 'winegrapeId', referencedColumnName: 'winegrapeId' })
   winegrape: Winegrape;
 
-  @ManyToOne(() => Wine)
+  @ManyToOne(() => Wine, { cascade: ['update', 'remove'] })
   @JoinColumn([
     { name: 'wine', referencedColumnName: 'wine' },
     { name: 'vintage', referencedColumnName: 'vintage' },
