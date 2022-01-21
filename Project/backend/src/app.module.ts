@@ -1,8 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import env from './config/env';
 import { UserModule } from './user/user.module';
@@ -14,6 +12,7 @@ import { AppLoggerMiddleware } from './middlewares/logger.middleware';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
 import { HelpersModule } from './helpers/helpers.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -44,9 +43,8 @@ import { HelpersModule } from './helpers/helpers.module';
     CartModule,
     OrderModule,
     HelpersModule,
+    PaymentModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
