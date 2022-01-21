@@ -44,7 +44,10 @@ export class CartService {
 
   async findAll(userID: number) {
     try {
-      return await this.cartItemRepository.find({ where: { userID } });
+      return await this.cartItemRepository.find({
+        where: { userID },
+        relations: ['wine'],
+      });
     } catch (error) {
       throw error;
     }
@@ -90,6 +93,16 @@ export class CartService {
       return await this.cartItemRepository.delete({
         winePK: wine,
         vintage,
+        userID,
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async empty(userID: number) {
+    try {
+      return await this.cartItemRepository.delete({
         userID,
       });
     } catch (error) {

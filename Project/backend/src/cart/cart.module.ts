@@ -9,5 +9,6 @@ import { WineModule } from 'src/wine/wine.module';
   imports: [TypeOrmModule.forFeature([CartItem]), WineModule],
   controllers: [CartController],
   providers: [CartService],
+  exports: [CartService],
 })
 export class CartModule {}

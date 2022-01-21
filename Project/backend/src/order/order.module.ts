@@ -10,5 +10,6 @@ import { HelpersModule } from 'src/helpers/helpers.module';
   imports: [TypeOrmModule.forFeature([Order, OrderWine]), HelpersModule],
   controllers: [OrderController],
   providers: [OrderService],
+  exports: [OrderService],
 })
 export class OrderModule {}
