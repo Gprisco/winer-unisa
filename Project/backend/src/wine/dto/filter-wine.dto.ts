@@ -74,7 +74,7 @@ export class FilterWine {
 
   @ApiProperty({
     name: 'page',
-    description: 'The page to get (starting from 0)',
+    description: 'The page to get (starting from 1)',
     required: true,
   })
   @Type(() => Number)

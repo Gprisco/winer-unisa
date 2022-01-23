@@ -24,6 +24,7 @@ export class PaginationService {
 
       return {
         totalItems,
+        pages: Math.ceil(totalItems / pageSize),
         position: skip + data.length,
         pageSize,
         currentPage: page,
