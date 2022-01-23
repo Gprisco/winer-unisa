@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from 'src/auth/dto/CreateUser.dto';
 import { HasherService } from 'src/hasher/hasher.service';
@@ -75,6 +75,7 @@ export class UserService {
 
       return { success: true, user: createdUser };
     } catch (error) {
+      Logger.error(error);
       return { success: false, error };
     }
   }

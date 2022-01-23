@@ -6,7 +6,6 @@ import {
   Inject,
   Get,
   Body,
-  InternalServerErrorException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
@@ -43,10 +42,6 @@ export class AuthController {
 
   @Post('register')
   async createUser(@Body() user: CreateUserDto) {
-    const createUserResponse = await this.authService.register(user);
-
-    if (!createUserResponse.success) throw new InternalServerErrorException();
-
-    return;
+    return await this.authService.register(user);
   }
 }

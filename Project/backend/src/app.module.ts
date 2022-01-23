@@ -34,6 +34,7 @@ import { PaymentModule } from './payment/payment.module';
         database: configService.get('db.schema'),
         entities: [join(__dirname, '**', '**.entity.{ts,js}')],
         synchronize: false,
+        debug: configService.get('db.debug'),
       }),
       inject: [ConfigService],
     }),
