@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { auth } from "../Services/routes";
+import { authService } from "../Services/routes";
 import AuthContext from "../Contexts/AuthContext";
 import jwtDecode from "jwt-decode";
 import {
@@ -14,7 +14,7 @@ const authProvider = {
   async signIn(email, password, callback) {
     const options = {
       method: "POST",
-      url: auth.login,
+      url: authService.login,
       data: {
         email,
         password,
@@ -33,7 +33,7 @@ const authProvider = {
   async signUp(email, password, callback) {
     const options = {
       method: "POST",
-      url: auth.register,
+      url: authService.register,
       data: {
         email,
         password,
@@ -56,7 +56,9 @@ const authProvider = {
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(
-    authProvider.isAuthenticated ? jwtDecode(getBearerToken()) : null
+    authProvider.isAuthenticated && !!getBearerToken()
+      ? jwtDecode(getBearerToken())
+      : null
   );
 
   function signIn(email, password, callback) {
