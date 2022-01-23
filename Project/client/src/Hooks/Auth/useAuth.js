@@ -5,18 +5,15 @@ import { auth } from "../../Services/routes";
 export const useAuth = (setTokenCallback, errorCallback) => {
   const [signInData, doSignIn] = useState({
     email: "",
-    paassword: "",
+    password: "",
     submit: false,
   });
-
-  const [apiCalling, setApiCalling] = useState(false);
 
   useEffect(() => {
     const { email, password, submit } = signInData;
 
     async function signIn() {
       console.log("calling signIn...");
-      setApiCalling(true);
 
       const options = {
         method: "POST",
@@ -31,16 +28,16 @@ export const useAuth = (setTokenCallback, errorCallback) => {
         const { data } = await axios(options);
 
         setTokenCallback(data.access_token);
+        return () => {};
       } catch (error) {
         errorCallback(error.response);
+        return () => {};
       }
-
-      setApiCalling(false);
     }
 
     console.log(email, password);
-    if (submit && !apiCalling) signIn();
-  }, [signInData, setTokenCallback, errorCallback, apiCalling]);
+    if (submit) signIn();
+  }, [signInData, setTokenCallback, errorCallback]);
 
-  return [signInData, doSignIn, apiCalling];
+  return [signInData, doSignIn];
 };

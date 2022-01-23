@@ -3,6 +3,7 @@ import SignInForm from "../../Components/Auth/SignInForm";
 import { useAuth } from "../../Hooks/Auth/useAuth";
 
 const SignIn = ({ onAuth }) => {
+  const [apiCalling, setApiCalling] = useState(false);
   const [error, setError] = useState(null);
 
   const handleError = (errorResponse) => {
@@ -12,11 +13,14 @@ const SignIn = ({ onAuth }) => {
     if (errorResponse.status === 401) setError("Email o Password errati");
   };
 
-  const [loginData, setLoginData, apiCalling] = useAuth(onAuth, handleError);
+  const [loginData, setLoginData] = useAuth((token) => {
+    setApiCalling(false);
+    onAuth(token);
+  }, handleError);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    setApiCalling(true);
     setLoginData({ ...loginData, submit: true });
   };
 

@@ -72,8 +72,8 @@ export default function SignIn({
               value={loginData.email}
               onChange={(props) =>
                 setLoginData({
+                  ...loginData,
                   email: props.target.value,
-                  password: loginData.password,
                 })
               }
             />
@@ -89,8 +89,8 @@ export default function SignIn({
               value={loginData.password}
               onChange={(props) =>
                 setLoginData({
+                  ...loginData,
                   password: props.currentTarget.value,
-                  email: loginData.email,
                 })
               }
             />
