@@ -1,15 +1,14 @@
 import Main from "./Pages/Main";
-import SignIn from "./Pages/Auth/SignIn";
-import { useBearerToken } from "./Hooks/Auth/useBearerToken";
+import AuthProvider from "./Providers/AuthProvider";
 
 import "./App.css";
 
 function App() {
-  const [token, setToken] = useBearerToken();
-
-  if (!token) return <SignIn onAuth={setToken} />;
-
-  return <Main />;
+  return (
+    <AuthProvider>
+      <Main />
+    </AuthProvider>
+  );
 }
 
 export default App;

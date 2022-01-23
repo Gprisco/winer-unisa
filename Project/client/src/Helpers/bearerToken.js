@@ -7,3 +7,7 @@ export function getBearerToken() {
 export function setBearerToken(token) {
   if (!!token) localStorage.setItem(BEARER_TOKEN_KEY, token);
 }
+
+export function deleteBearerToken() {
+  localStorage.removeItem(BEARER_TOKEN_KEY);
+}

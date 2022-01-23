@@ -12,17 +12,19 @@ import Container from "@mui/material/Container";
 import Copyright from "../Common/Copyright";
 import ErrorAlert from "../Common/ErrorAlert";
 
-import { signUpRoute } from "../../Pages/Auth/SignUp";
+import { signInRoute } from "../../Pages/Auth/SignIn";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme();
 
-export default function SignInForm({
+export default function SignUpForm({
   email,
   password,
+  confirmPassword,
   onEmail,
   onPassword,
+  onConfirmPassword,
   error,
   onCloseError,
   onSubmit,
@@ -44,7 +46,7 @@ export default function SignInForm({
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Accedi
+            Registrati
           </Typography>
           <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -59,6 +61,7 @@ export default function SignInForm({
               value={email}
               onChange={(props) => onEmail(props.target.value)}
             />
+
             <TextField
               margin="normal"
               required
@@ -71,6 +74,20 @@ export default function SignInForm({
               value={password}
               onChange={(props) => onPassword(props.currentTarget.value)}
             />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Confirm Password"
+              type="password"
+              id="confirmPassword"
+              autoComplete="current-password"
+              value={confirmPassword}
+              onChange={(props) => onConfirmPassword(props.currentTarget.value)}
+            />
+
             <LoadingButton
               type="submit"
               loading={apiCalling}
@@ -78,15 +95,15 @@ export default function SignInForm({
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Accedi
+              Registrati
             </LoadingButton>
 
             <ErrorAlert error={error} onCloseError={onCloseError} />
 
             <Grid container sx={{ justifyContent: "center" }}>
               <Grid item>
-                <Link href={signUpRoute} variant="body2">
-                  {"Non hai un account? Registrati"}
+                <Link href={signInRoute} variant="body2">
+                  {"Hai già un account? Accedi"}
                 </Link>
               </Grid>
             </Grid>
