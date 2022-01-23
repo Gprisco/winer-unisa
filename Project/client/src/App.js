@@ -1,5 +1,6 @@
-import Main from "./Pages/Main";
 import AuthProvider from "./Providers/AuthProvider";
+
+import Main from "./Pages/Main";
 
 import "./App.css";
 
