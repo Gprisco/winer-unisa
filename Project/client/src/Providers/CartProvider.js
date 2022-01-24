@@ -92,8 +92,22 @@ export default function CartProvider({ children }) {
 
   function update(wine, vintage, quantity, cb = () => {}) {
     return cartProvider.update(wine, vintage, quantity, (err, data) => {
-      if (err) return toast(JSON.stringify(err.data), { type: "error" });
+      if (err)
+        return toast(
+          err && err.data && err.data.message
+            ? err.data.message[0]
+            : JSON.stringify(err),
+          { type: "error" }
+        );
 
+      setCart(
+        cart.map((item) => {
+          if (item.winePK === wine && item.vintage === vintage)
+            item.quantity = quantity;
+
+          return item;
+        })
+      );
       cb(data);
     });
   }
@@ -102,6 +116,9 @@ export default function CartProvider({ children }) {
     return cartProvider.remove(wine, vintage, (err, data) => {
       if (err) return toast(JSON.stringify(err.data), { type: "error" });
 
+      setCart(
+        cart.filter((item) => item.winePK !== wine && item.vintage !== vintage)
+      );
       cb(data);
     });
   }

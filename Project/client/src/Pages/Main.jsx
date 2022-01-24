@@ -7,6 +7,7 @@ import SignUp, { signUpRoute } from "./Auth/SignUp";
 
 import ResponsiveAppBar from "./ResponsiveAppBar";
 import useAuth from "../Hooks/Auth/useAuth";
+import Cart, { cartRoute } from "./Cart/Cart";
 
 const Main = () => {
   const auth = useAuth();
@@ -29,6 +30,7 @@ const Main = () => {
         <Route index element={<Navigate to={catalogRoute} />} />
 
         <Route path={catalogRoute} element={<Catalog />} />
+        <Route path={cartRoute} element={<Cart />} />
       </Routes>
     </CartProvider>
   );

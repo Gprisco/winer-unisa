@@ -1,5 +1,4 @@
-import Typography from "@mui/material/Typography";
-
+import PageTitle from "../../Components/Common/PageTitle";
 import RequireAuth from "../../Components/Auth/RequireAuth";
 import WineList from "../../Components/Catalog/WineList";
 
@@ -8,9 +7,7 @@ export const catalogRoute = "/catalog";
 const Catalog = () => {
   return (
     <RequireAuth>
-      <Typography variant="h3" sx={{ marginY: "30px", marginX: "50px" }}>
-        Catalogo
-      </Typography>
+      <PageTitle title="Catalogo" />
       <WineList />
     </RequireAuth>
   );

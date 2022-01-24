@@ -17,6 +17,7 @@ import useAuth from "../Hooks/Auth/useAuth";
 
 import { signInRoute } from "./Auth/SignIn";
 import { catalogRoute } from "./Catalog/Catalog";
+import { cartRoute } from "./Cart/Cart";
 
 const ResponsiveAppBar = () => {
   const auth = useAuth();
@@ -24,7 +25,7 @@ const ResponsiveAppBar = () => {
 
   const pages = [
     { title: "Catalogo", route: catalogRoute },
-    { title: "Ordini", route: catalogRoute },
+    { title: "Carrello", route: cartRoute },
   ];
 
   const settings = [

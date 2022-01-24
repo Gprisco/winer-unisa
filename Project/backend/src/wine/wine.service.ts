@@ -8,6 +8,7 @@ import { Wine } from './entities/wine.entity';
 import { WineWinegrapeService } from 'src/wine-winegrape/wine-winegrape.service';
 import { FilterWinesHelper } from './filter-wine.helper';
 import { PaginationService } from 'src/helpers/pagination.service';
+import { allWineRelations } from './common/wine.all-relations';
 
 @Injectable()
 export class WineService {
@@ -52,7 +53,7 @@ export class WineService {
       return this.paginationService.paginate(
         filterWines.page,
         this.wineRepository,
-        { where, relations: ['winegrapes', 'winefamily', 'winery'] },
+        { where, relations: [...allWineRelations] },
       );
     } catch (error) {
       throw error;
@@ -64,16 +65,7 @@ export class WineService {
       const foundWine = await this.wineRepository.findOne(
         { wine, vintage },
         {
-          relations: [
-            'winery',
-            'winefamily',
-            'winefamily.winecolor',
-            'winefamily.winetype',
-            'winefamily.winedenom',
-            'winefamily.region',
-            'winefamily.region.country',
-            'winegrapes',
-          ],
+          relations: [...allWineRelations],
         },
       );
 

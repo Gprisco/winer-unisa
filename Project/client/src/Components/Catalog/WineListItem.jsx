@@ -33,14 +33,22 @@ export default function WineListItem({ wine, cart }) {
           </ButtonBase>
         </Grid>
         <Grid item xs={12} sm container>
-          <Grid item xs container direction="column" spacing={5}>
+          <Grid item container xs={10} direction="column" spacing={5}>
             <Grid item xs>
-              <Typography gutterBottom variant="subtitle1" component="div">
+              <Typography gutterBottom variant="title1" component="div">
                 {capitalize(wine.wine)}
               </Typography>
               <Typography variant="body2" gutterBottom>
-                {wine.winery.winery}
+                Azienda: {wine.winery.winery}
               </Typography>
+              {wine.winegrapes.length > 0 && (
+                <Typography variant="body2" color="text.secondary">
+                  Uvaggio:{" "}
+                  {wine.winegrapes.map(
+                    (wg) => `${wg.winegrape.winegrape} (${wg.percentage}%) `
+                  )}
+                </Typography>
+              )}
               <Typography variant="body2" color="text.secondary">
                 Disponibili: {wine.availability}
               </Typography>
@@ -57,9 +65,9 @@ export default function WineListItem({ wine, cart }) {
             xs
             container
             direction="column"
-            alignItems="flex-end"
+            alignItems="center"
             justifyContent="center"
-            spacing={5}
+            spacing={2}
           >
             <Grid item textAlign="center">
               <Typography variant="subtitle1" component="div">
@@ -67,7 +75,7 @@ export default function WineListItem({ wine, cart }) {
               </Typography>
             </Grid>
             <Grid item>
-              {wine.availability > 0 && (
+              {cart && wine.availability > 0 && (
                 <AddToCart
                   wine={capitalize(wine.wine)}
                   vintage={wine.vintage}

@@ -5,6 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { allWineRelations } from 'src/wine/common/wine.all-relations';
 import { WineService } from 'src/wine/wine.service';
 import { Repository } from 'typeorm';
 import { CreateCartDto } from './dto/create-cart.dto';
@@ -48,9 +49,7 @@ export class CartService {
         where: { userID },
         relations: [
           'wine',
-          'wine.winery',
-          'wine.winefamily',
-          'wine.winegrapes',
+          ...allWineRelations.map((relation) => 'wine.' + relation),
         ],
       });
     } catch (error) {
