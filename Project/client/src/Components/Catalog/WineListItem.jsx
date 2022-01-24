@@ -5,6 +5,8 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import ButtonBase from "@mui/material/ButtonBase";
 
+import AddToCart from "./AddToCart";
+
 import { capitalize } from "../../Helpers/string";
 
 const Img = styled("img")({
@@ -49,10 +51,22 @@ export default function WineListItem({ wine }) {
               </Typography>
             </Grid>
           </Grid>
-          <Grid item>
-            <Typography variant="subtitle1" component="div">
-              € {wine.price}
-            </Typography>
+
+          <Grid
+            item
+            xs
+            container
+            direction="column"
+            alignItems="flex-end"
+            justifyContent="center"
+            spacing={5}
+          >
+            <Grid item textAlign="center">
+              <Typography variant="subtitle1" component="div">
+                € {wine.price}
+              </Typography>
+            </Grid>
+            <Grid item>{wine.availability > 0 && <AddToCart />}</Grid>
           </Grid>
         </Grid>
       </Grid>
