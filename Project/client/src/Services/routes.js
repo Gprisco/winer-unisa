@@ -10,3 +10,8 @@ export const wineService = {
   wines: basePath + "/wine",
   wine: (name, vintage) => wineService.wines + `/${name}/${vintage}`,
 };
+
+export const cartService = {
+  cart: basePath + "/cart",
+  cartItem: (wine, vintage) => cartService.cart + `/${wine}/${vintage}`,
+};

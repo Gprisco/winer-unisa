@@ -3,12 +3,15 @@ import { useState } from "react";
 import Pagination from "@mui/material/Pagination";
 import Grid from "@mui/material/Grid";
 
+import useCart from "../../Hooks/Cart/useCart";
 import useWines from "../../Hooks/Wines/useWines";
 import WineListItem from "./WineListItem";
 import ErrorAlert from "../Common/ErrorAlert";
 import Loader from "../Common/Loader";
 
 const WineList = () => {
+  const cart = useCart();
+
   const [error, setError] = useState(null);
 
   const onError = (err) => {
@@ -43,7 +46,7 @@ const WineList = () => {
 
           {wines.data.map((item) => (
             <Grid key={item.wine + item.vintage} item xs={12}>
-              <WineListItem wine={item} />
+              <WineListItem wine={item} cart={cart} />
             </Grid>
           ))}
         </Grid>

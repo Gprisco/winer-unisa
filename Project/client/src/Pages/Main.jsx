@@ -1,4 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import CartProvider from "../Providers/CartProvider";
+
 import Catalog, { catalogRoute } from "./Catalog/Catalog";
 import SignIn, { signInRoute } from "./Auth/SignIn";
 import SignUp, { signUpRoute } from "./Auth/SignUp";
@@ -20,7 +22,7 @@ const Main = () => {
     );
 
   return (
-    <>
+    <CartProvider>
       <ResponsiveAppBar />
 
       <Routes>
@@ -28,7 +30,7 @@ const Main = () => {
 
         <Route path={catalogRoute} element={<Catalog />} />
       </Routes>
-    </>
+    </CartProvider>
   );
 };
 

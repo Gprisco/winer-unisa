@@ -11,6 +11,6 @@ export async function performAuthenticatedRequest(
     method,
     url,
     data,
-    headers: { authorization: getBearerToken(), ...headers },
+    headers: { authorization: "Bearer " + getBearerToken(), ...headers },
   });
 }

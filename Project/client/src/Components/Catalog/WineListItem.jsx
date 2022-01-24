@@ -16,7 +16,7 @@ const Img = styled("img")({
   maxHeight: "100%",
 });
 
-export default function WineListItem({ wine }) {
+export default function WineListItem({ wine, cart }) {
   return (
     <Paper
       sx={{
@@ -66,7 +66,15 @@ export default function WineListItem({ wine }) {
                 € {wine.price}
               </Typography>
             </Grid>
-            <Grid item>{wine.availability > 0 && <AddToCart />}</Grid>
+            <Grid item>
+              {wine.availability > 0 && (
+                <AddToCart
+                  wine={capitalize(wine.wine)}
+                  vintage={wine.vintage}
+                  cart={cart}
+                />
+              )}
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
