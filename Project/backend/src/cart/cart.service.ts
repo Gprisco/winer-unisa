@@ -46,7 +46,12 @@ export class CartService {
     try {
       return await this.cartItemRepository.find({
         where: { userID },
-        relations: ['wine'],
+        relations: [
+          'wine',
+          'wine.winery',
+          'wine.winefamily',
+          'wine.winegrapes',
+        ],
       });
     } catch (error) {
       throw error;
