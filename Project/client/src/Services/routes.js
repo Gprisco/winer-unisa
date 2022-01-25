@@ -15,3 +15,7 @@ export const cartService = {
   cart: basePath + "/cart",
   cartItem: (wine, vintage) => cartService.cart + `/${wine}/${vintage}`,
 };
+
+export const paymentService = {
+  pay: basePath + "/payment",
+};

@@ -1,7 +1,10 @@
 import PropTypes from "prop-types";
 import { Typography, Grid } from "@mui/material";
+import useCart from "../../Hooks/Cart/useCart";
 
-const CartTotal = ({ items }) => {
+const CartTotal = () => {
+  const cart = useCart();
+
   return (
     <Grid
       item
@@ -17,12 +20,7 @@ const CartTotal = ({ items }) => {
 
       <Grid item container xs justifyContent="center">
         <Typography variant="h5" color="text.secondary">
-          €{" "}
-          {items.reduce(
-            (prev, next) =>
-              (prev ? prev.wine.price : 0) + (next ? next.wine.price : 0),
-            0
-          )}
+          € {cart.getTotalPrice()}
         </Typography>
       </Grid>
     </Grid>

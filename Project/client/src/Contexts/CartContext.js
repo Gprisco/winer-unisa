@@ -6,4 +6,6 @@ export default createContext({
   update: (wine, vintage, quantity, cb) => {},
   remove: (wine, vintage, cb) => {},
   getCart: () => {},
+  buy: (creditCardNumber, cvc, cb) => {},
+  getTotalPrice: () => {},
 });

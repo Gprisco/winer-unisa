@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 
 import CartContext from "../Contexts/CartContext";
 import { performAuthenticatedRequest } from "../Helpers/axios";
-import { cartService } from "../Services/routes";
+import { cartService, paymentService } from "../Services/routes";
 
 const cartProvider = {
   async getCart(cb) {
@@ -62,6 +62,19 @@ const cartProvider = {
       cb(error.response, null);
     }
   },
+  async pay(creditCardNumber, cvc, cb) {
+    try {
+      const response = await performAuthenticatedRequest(
+        "POST",
+        paymentService.pay,
+        { creditCardNumber, cvc }
+      );
+
+      cb(null, response.data);
+    } catch (error) {
+      cb(error.response, null);
+    }
+  },
 };
 
 export default function CartProvider({ children }) {
@@ -72,12 +85,10 @@ export default function CartProvider({ children }) {
   }, []);
 
   function getCart() {
-    console.log("calling get");
     cartProvider.getCart((cart) => setCart(cart));
   }
 
   function add(wine, vintage, cb = () => {}) {
-    console.log("calling add");
     return cartProvider.add(wine, vintage, (err, data) => {
       if (err)
         return toast(JSON.stringify(err.data), { type: toast.TYPE.ERROR });
@@ -114,7 +125,10 @@ export default function CartProvider({ children }) {
 
   function remove(wine, vintage, cb = () => {}) {
     return cartProvider.remove(wine, vintage, (err, data) => {
-      if (err) return toast(JSON.stringify(err.data), { type: "error" });
+      if (err) {
+        toast(JSON.stringify(err.data), { type: "error" });
+        cb(false);
+      }
 
       setCart(
         cart.filter((item) => item.winePK !== wine && item.vintage !== vintage)
@@ -123,7 +137,28 @@ export default function CartProvider({ children }) {
     });
   }
 
-  const value = { cart, getCart, add, update, remove };
+  function pay(creditCardNumber, cvc, cb = () => {}) {
+    return cartProvider.pay(creditCardNumber, cvc, (err, data) => {
+      if (err)
+        return toast(err.data ? err.data.message[0] : "", {
+          type: toast.TYPE.ERROR,
+        });
+
+      setCart([]);
+      cb(true);
+    });
+  }
+
+  function getTotalPrice() {
+    return cart.reduce(
+      (prev, next) =>
+        (prev.wine ? prev.wine.price * prev.quantity : prev) +
+        (next && next.wine ? next.wine.price * next.quantity : 0),
+      0
+    );
+  }
+
+  const value = { cart, getCart, add, update, remove, pay, getTotalPrice };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
