@@ -4,6 +4,7 @@ import {
   Between,
   MoreThanOrEqual,
   LessThanOrEqual,
+  Like,
 } from 'typeorm';
 import { FilterWine } from './dto/filter-wine.dto';
 import { Wine } from './entities/wine.entity';
@@ -13,7 +14,9 @@ export class FilterWinesHelper {
   buildFilterWineQuery(filterWine: FilterWine): FindConditions<Wine> {
     const where: FindConditions<Wine> = {};
 
-    const { priceMin, priceMax, page: _, ...options } = filterWine;
+    const { priceMin, priceMax, page: _, wine, ...options } = filterWine;
+
+    if (!!wine) where.wine = Like(`%${wine}%`);
 
     if (!isNaN(priceMin) && !isNaN(priceMax))
       where.price = Between(priceMin, priceMax);

@@ -7,13 +7,19 @@ export default function useWines(onError) {
   const [wineData, setWineData] = useState({});
   const [apiCalling, setApiCalling] = useState(true);
 
+  const [wineSearch, setWineSearch] = useState("");
+
   async function get() {
     try {
       setApiCalling(true);
 
+      let queryString = `?page=${page}`;
+
+      if (!!wineSearch) queryString += `&wine=${wineSearch}`;
+
       const response = await performAuthenticatedRequest(
         "GET",
-        wineService.wines + `?page=${page}`
+        wineService.wines + queryString
       );
 
       setWineData(response.data);
@@ -27,7 +33,7 @@ export default function useWines(onError) {
     if (page > 0) get();
 
     return () => {};
-  }, [page]);
+  }, [page, wineSearch]);
 
-  return [wineData, page, setPage, apiCalling];
+  return [wineData, page, setPage, apiCalling, setWineSearch];
 }
