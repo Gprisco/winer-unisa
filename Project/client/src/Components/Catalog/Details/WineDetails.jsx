@@ -31,83 +31,89 @@ const WineDetails = ({ wine }) => {
         </Grid>
       </Grid>
 
-      <Grid item xs>
-        <Grid container>
-          <Grid item>
-            <ButtonBase sx={{ width: "auto", height: 512 }}>
-              <WineImg
-                alt="Bottle"
-                src="https://wineboard.io/api/wine/image/10633"
-              />
-            </ButtonBase>
-          </Grid>
+      <Grid
+        item
+        container
+        direction="row"
+        xs={6}
+        justifyContent="center"
+        alignItems="center"
+        spacing={5}
+      >
+        <Grid item xs="auto" mx="auto">
+          <ButtonBase sx={{ width: "auto", height: 512 }}>
+            <WineImg
+              alt="Bottle"
+              src="https://wineboard.io/api/wine/image/10633"
+            />
+          </ButtonBase>
+        </Grid>
+        <Grid
+          item
+          xs={"auto"}
+          sm
+          container
+          alignItems="center"
+          justifyContent="center"
+        >
           <Grid
             item
-            xs={12}
-            sm
             container
+            xs={8}
+            direction="column"
             alignItems="center"
             justifyContent="center"
+            spacing={5}
           >
-            <Grid
-              item
-              container
-              xs={10}
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              spacing={5}
-            >
-              <Grid item xs>
+            <Grid item xs>
+              <Typography variant="body1" gutterBottom>
+                Produttore: {wine.winery.winery}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                Famiglia: {wine.winefamily.winefamily}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                Colore: {wine.winefamily.winecolor.winecolor}
+              </Typography>
+              <Typography variant="body1" gutterBottom>
+                Tipologia: {wine.winefamily.winetype.winetype}
+              </Typography>
+              {wine.winegrapes.length > 0 && (
                 <Typography variant="body1" gutterBottom>
-                  Produttore: {wine.winery.winery}
+                  Uvaggio:{" "}
+                  {wine.winegrapes.map(
+                    (wg) => `${wg.winegrape.winegrape} (${wg.percentage}%) `
+                  )}
                 </Typography>
-                <Typography variant="body1" gutterBottom>
-                  Famiglia: {wine.winefamily.winefamily}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  Colore: {wine.winefamily.winecolor.winecolor}
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  Tipologia: {wine.winefamily.winetype.winetype}
-                </Typography>
-                {wine.winegrapes.length > 0 && (
-                  <Typography variant="body1" gutterBottom>
-                    Uvaggio:{" "}
-                    {wine.winegrapes.map(
-                      (wg) => `${wg.winegrape.winegrape} (${wg.percentage}%) `
-                    )}
-                  </Typography>
-                )}
-                <Typography variant="body1" color="text.secondary">
-                  Disponibili: {wine.availability}
-                </Typography>
-              </Grid>
+              )}
+              <Typography variant="body1" color="text.secondary">
+                Disponibili: {wine.availability}
+              </Typography>
             </Grid>
+          </Grid>
 
-            <Grid
-              item
-              xs
-              container
-              direction="column"
-              alignItems="center"
-              justifyContent="center"
-              spacing={2}
-            >
-              <Grid item textAlign="center">
-                <Typography variant="subtitle1" component="div">
-                  € {wine.price}
-                </Typography>
-              </Grid>
-              <Grid item>
-                {cart && wine.availability > 0 && (
-                  <AddToCart
-                    wine={capitalize(wine.wine)}
-                    vintage={wine.vintage}
-                    cart={cart}
-                  />
-                )}
-              </Grid>
+          <Grid
+            item
+            xs
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+            spacing={2}
+          >
+            <Grid item textAlign="center">
+              <Typography variant="subtitle1" component="div">
+                € {wine.price}
+              </Typography>
+            </Grid>
+            <Grid item>
+              {cart && wine.availability > 0 && (
+                <AddToCart
+                  wine={capitalize(wine.wine)}
+                  vintage={wine.vintage}
+                  cart={cart}
+                />
+              )}
             </Grid>
           </Grid>
         </Grid>
