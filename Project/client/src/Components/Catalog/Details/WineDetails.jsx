@@ -1,36 +1,14 @@
 import { Grid, Typography, ButtonBase } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
 import { capitalize } from "../../../Helpers/string";
 import useCart from "../../../Hooks/Cart/useCart";
 import { WineImg } from "../WineListItem";
 import AddToCart from "../AddToCart";
-import PageTitle from "../../Common/PageTitle";
 
 const WineDetails = ({ wine }) => {
   const cart = useCart();
-  const location = useLocation();
 
   return (
     <Grid container direction="column">
-      <Grid
-        item
-        container
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        spacing={2}
-      >
-        <Grid item>
-          <Link to={location.state?.from?.pathname || "/"}>
-            {"<"} Torna indietro
-          </Link>
-        </Grid>
-
-        <Grid item>
-          <PageTitle title={capitalize(wine.wine)} />
-        </Grid>
-      </Grid>
-
       <Grid
         item
         container
@@ -40,8 +18,8 @@ const WineDetails = ({ wine }) => {
         alignItems="center"
         spacing={5}
       >
-        <Grid item xs="auto" mx="auto">
-          <ButtonBase sx={{ width: "auto", height: 512 }}>
+        <Grid item container xs={4} justifyContent="flex-end">
+          <ButtonBase sx={{ width: "auto", height: 512, marginX: "auto" }}>
             <WineImg
               alt="Bottle"
               src="https://wineboard.io/api/wine/image/10633"
@@ -61,10 +39,55 @@ const WineDetails = ({ wine }) => {
             container
             xs={8}
             direction="column"
-            alignItems="center"
+            alignItems="flex-start"
             justifyContent="center"
             spacing={5}
           >
+            <Grid
+              item
+              container
+              alignItems="flex-start"
+              direction="column"
+              xs
+              spacing={2}
+            >
+              <Grid item xs>
+                <Typography variant="h4" gutterBottom sx={{ fontWeight: 500 }}>
+                  {capitalize(wine.wine)}
+                </Typography>
+              </Grid>
+
+              <Grid
+                item
+                container
+                alignItems="center"
+                direction="row"
+                xs
+                spacing={2}
+              >
+                <Grid item xs={6} md={2}>
+                  <Typography
+                    variant="subtitle1"
+                    component="div"
+                    sx={{ fontWeight: 500 }}
+                    textAlign="center"
+                  >
+                    € {wine.price}
+                  </Typography>
+                </Grid>
+
+                <Grid item xs={6} md={2}>
+                  {cart && wine.availability > 0 && (
+                    <AddToCart
+                      wine={capitalize(wine.wine)}
+                      vintage={wine.vintage}
+                      cart={cart}
+                    />
+                  )}{" "}
+                </Grid>
+              </Grid>
+            </Grid>
+
             <Grid item xs>
               <Typography variant="body1" gutterBottom>
                 Produttore: {wine.winery.winery}
@@ -89,31 +112,6 @@ const WineDetails = ({ wine }) => {
               <Typography variant="body1" color="text.secondary">
                 Disponibili: {wine.availability}
               </Typography>
-            </Grid>
-          </Grid>
-
-          <Grid
-            item
-            xs
-            container
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-            spacing={2}
-          >
-            <Grid item textAlign="center">
-              <Typography variant="subtitle1" component="div">
-                € {wine.price}
-              </Typography>
-            </Grid>
-            <Grid item>
-              {cart && wine.availability > 0 && (
-                <AddToCart
-                  wine={capitalize(wine.wine)}
-                  vintage={wine.vintage}
-                  cart={cart}
-                />
-              )}
             </Grid>
           </Grid>
         </Grid>
