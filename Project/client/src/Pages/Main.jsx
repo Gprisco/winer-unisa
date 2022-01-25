@@ -2,25 +2,17 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import CartProvider from "../Providers/CartProvider";
 
 import Catalog, { catalogRoute } from "./Catalog/Catalog";
+import RequireAuth from "../Components/Auth/RequireAuth";
 import SignIn, { signInRoute } from "./Auth/SignIn";
 import SignUp, { signUpRoute } from "./Auth/SignUp";
+import Cart, { cartRoute } from "./Cart/Cart";
+import WineDetailsPage, { wineDetailsRoute } from "./Catalog/WineDetailsPage";
 
 import ResponsiveAppBar from "./ResponsiveAppBar";
 import useAuth from "../Hooks/Auth/useAuth";
-import Cart, { cartRoute } from "./Cart/Cart";
 
 const Main = () => {
   const auth = useAuth();
-
-  if (!auth.user)
-    return (
-      <Routes>
-        <Route index element={<Navigate to={signInRoute} />} />
-
-        <Route path={signInRoute} element={<SignIn />} />
-        <Route path={signUpRoute} element={<SignUp />} />
-      </Routes>
-    );
 
   return (
     <CartProvider>
@@ -29,8 +21,26 @@ const Main = () => {
       <Routes>
         <Route index element={<Navigate to={catalogRoute} />} />
 
+        {!auth.user && (
+          <>
+            <Route path={signInRoute} element={<SignIn />} />
+            <Route path={signUpRoute} element={<SignUp />} />
+          </>
+        )}
+
         <Route path={catalogRoute} element={<Catalog />} />
-        <Route path={cartRoute} element={<Cart />} />
+        <Route
+          path={`${catalogRoute}/${wineDetailsRoute(":wine", ":vintage")}`}
+          element={<WineDetailsPage />}
+        />
+        <Route
+          path={cartRoute}
+          element={
+            <RequireAuth>
+              <Cart />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </CartProvider>
   );

@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import SignUpForm from "../../Components/Auth/SignUpForm";
 import useAuth from "../../Hooks/Auth/useAuth";
 
-export const signUpRoute = "/signup";
+export const signUpRoute = "signup";
 
 const SignUp = () => {
   const auth = useAuth();

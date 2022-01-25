@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import CartContext from "../Contexts/CartContext";
 import { performAuthenticatedRequest } from "../Helpers/axios";
 import { cartService, paymentService } from "../Services/routes";
+import useAuth from "../Hooks/Auth/useAuth";
+import { signInRoute } from "../Pages/Auth/SignIn";
 
 const cartProvider = {
   async getCart(cb) {
@@ -79,16 +82,23 @@ const cartProvider = {
 
 export default function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
+  const auth = useAuth();
+
+  function checkAuth() {
+    if (!auth.user) navigate(signInRoute, { replace: true });
+  }
 
   useEffect(() => {
-    getCart();
-  }, []);
+    if (auth.user) getCart();
+  }, [auth.user]);
 
   function getCart() {
     cartProvider.getCart((cart) => setCart(cart));
   }
 
   function add(wine, vintage, cb = () => {}) {
+    checkAuth();
     return cartProvider.add(wine, vintage, (err, data) => {
       if (err)
         return toast(JSON.stringify(err.data), { type: toast.TYPE.ERROR });
@@ -102,6 +112,7 @@ export default function CartProvider({ children }) {
   }
 
   function update(wine, vintage, quantity, cb = () => {}) {
+    checkAuth();
     return cartProvider.update(wine, vintage, quantity, (err, data) => {
       if (err)
         return toast(
@@ -124,6 +135,7 @@ export default function CartProvider({ children }) {
   }
 
   function remove(wine, vintage, cb = () => {}) {
+    checkAuth();
     return cartProvider.remove(wine, vintage, (err, data) => {
       if (err) return toast(JSON.stringify(err.data), { type: "error" });
 
@@ -135,6 +147,7 @@ export default function CartProvider({ children }) {
   }
 
   function pay(creditCardNumber, cvc, address, cb = () => {}) {
+    checkAuth();
     return cartProvider.pay(creditCardNumber, cvc, address, (err, data) => {
       if (err) {
         toast(err.data ? err.data.message[0] : "", {
@@ -149,6 +162,7 @@ export default function CartProvider({ children }) {
   }
 
   function getTotalPrice() {
+    checkAuth();
     return cart.reduce(
       (prev, next) =>
         (prev.wine ? prev.wine.price * prev.quantity : prev) +

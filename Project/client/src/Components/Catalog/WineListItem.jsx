@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -8,8 +9,10 @@ import ButtonBase from "@mui/material/ButtonBase";
 import AddToCart from "./AddToCart";
 
 import { capitalize } from "../../Helpers/string";
+import { wineDetailsRoute } from "../../Pages/Catalog/WineDetailsPage";
+import { catalogRoute } from "../../Pages/Catalog/Catalog";
 
-const Img = styled("img")({
+export const WineImg = styled("img")({
   margin: "auto",
   display: "block",
   maxWidth: "100%",
@@ -29,7 +32,10 @@ export default function WineListItem({ wine, cart }) {
       <Grid container spacing={2}>
         <Grid item>
           <ButtonBase sx={{ width: 128, height: 128 }}>
-            <Img alt="Bottle" src="https://wineboard.io/api/wine/image/10633" />
+            <WineImg
+              alt="Bottle"
+              src="https://wineboard.io/api/wine/image/10633"
+            />
           </ButtonBase>
         </Grid>
         <Grid item xs={12} sm container>
@@ -55,7 +61,14 @@ export default function WineListItem({ wine, cart }) {
             </Grid>
             <Grid item>
               <Typography sx={{ cursor: "pointer" }} variant="body2">
-                Dettagli
+                <Link
+                  to={`/${catalogRoute}/${wineDetailsRoute(
+                    wine.wine,
+                    wine.vintage
+                  )}`}
+                >
+                  Dettagli
+                </Link>
               </Typography>
             </Grid>
           </Grid>
