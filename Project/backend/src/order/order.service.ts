@@ -22,6 +22,7 @@ export class OrderService {
       const order = this.orderRepository.create({
         createdAt: new Date(),
         userID,
+        address: createOrderDto.address,
       });
 
       await this.orderRepository.save(order);

@@ -1,15 +1,8 @@
-import {
-  Body,
-  Controller,
-  Logger,
-  Post,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { UserPayloadDto } from 'src/auth/dto/UserPayload.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt';
-import { PaymentDto } from './payment.dto';
+import { PaymentDto } from './dto/payment.dto';
 import { PaymentService } from './payment.service';
 
 @Controller('payment')
@@ -25,7 +18,6 @@ export class PaymentController {
     @Body() body: PaymentDto,
   ) {
     const user = req.user as UserPayloadDto;
-    Logger.log(body.creditCardNumber);
-    this.paymentService.completeOrder(user.sub);
+    this.paymentService.completeOrder(user.sub, body.address);
   }
 }

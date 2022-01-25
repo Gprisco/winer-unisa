@@ -98,6 +98,7 @@ create table p_order
     createdAt datetime             not null,
     userID    int                  not null,
     confirmed tinyint(1) default 0 not null,
+    address varchar(100) not null,
     constraint p_order_a_user_userID_fk
         foreign key (userID) references a_user (userID)
             on update cascade on delete cascade

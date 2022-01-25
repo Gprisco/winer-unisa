@@ -62,12 +62,12 @@ const cartProvider = {
       cb(error.response, null);
     }
   },
-  async pay(creditCardNumber, cvc, cb) {
+  async pay(creditCardNumber, cvc, address, cb) {
     try {
       const response = await performAuthenticatedRequest(
         "POST",
         paymentService.pay,
-        { creditCardNumber, cvc }
+        { creditCardNumber, cvc, address }
       );
 
       cb(null, response.data);
@@ -125,10 +125,7 @@ export default function CartProvider({ children }) {
 
   function remove(wine, vintage, cb = () => {}) {
     return cartProvider.remove(wine, vintage, (err, data) => {
-      if (err) {
-        toast(JSON.stringify(err.data), { type: "error" });
-        cb(false);
-      }
+      if (err) return toast(JSON.stringify(err.data), { type: "error" });
 
       setCart(
         cart.filter((item) => item.winePK !== wine && item.vintage !== vintage)
@@ -137,12 +134,14 @@ export default function CartProvider({ children }) {
     });
   }
 
-  function pay(creditCardNumber, cvc, cb = () => {}) {
-    return cartProvider.pay(creditCardNumber, cvc, (err, data) => {
-      if (err)
-        return toast(err.data ? err.data.message[0] : "", {
+  function pay(creditCardNumber, cvc, address, cb = () => {}) {
+    return cartProvider.pay(creditCardNumber, cvc, address, (err, data) => {
+      if (err) {
+        toast(err.data ? err.data.message[0] : "", {
           type: toast.TYPE.ERROR,
         });
+        return cb(false);
+      }
 
       setCart([]);
       cb(true);

@@ -10,7 +10,7 @@ export class PaymentService {
   @Inject()
   private cartService: CartService;
 
-  async completeOrder(userID: number) {
+  async completeOrder(userID: number, address: string) {
     try {
       const cartItems = await this.cartService.findAll(userID);
 
@@ -22,6 +22,7 @@ export class PaymentService {
             quantity: cartItem.quantity,
             price: cartItem.wine.price,
           })),
+          address,
         },
         userID,
       );

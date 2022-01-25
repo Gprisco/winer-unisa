@@ -23,6 +23,9 @@ export class Order {
   @Column('boolean')
   confirmed: boolean;
 
+  @Column('varchar')
+  address: string;
+
   @ManyToOne(() => User, { cascade: ['update', 'remove'] })
   @JoinColumn({ name: 'userID', referencedColumnName: 'userID' })
   user: User;

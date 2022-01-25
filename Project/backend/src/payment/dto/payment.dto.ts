@@ -18,4 +18,13 @@ export class PaymentDto {
   @IsString()
   @Length(3, 3)
   cvc: string;
+
+  @ApiProperty({
+    name: 'address',
+    description: 'The Address to which to deliver the order',
+    required: true,
+  })
+  @IsString()
+  @Length(3, 100)
+  address: string;
 }

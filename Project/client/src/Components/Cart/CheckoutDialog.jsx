@@ -21,10 +21,19 @@ export default function CheckoutDialog({ onClose, open, ...other }) {
 
   const { state, setData, setExplicitField, validate } = useValidator({
     initialData: {
+      address: "",
       creditCardNumber: "",
       cvc: "",
     },
     schema: Joi.object({
+      address: Joi.string()
+        .min(3)
+        .required()
+        .error((err) => {
+          err[0].message = "Il valore deve essere un'indirizzo valido";
+          return err;
+        }),
+
       creditCardNumber: Joi.string()
         .creditCard()
         .required()
@@ -41,12 +50,13 @@ export default function CheckoutDialog({ onClose, open, ...other }) {
         }),
     }),
     explicitCheck: {
+      address: false,
       creditCardNumber: false,
       cvc: false,
     },
   });
 
-  const { creditCardNumber, cvc } = state.$data;
+  const { creditCardNumber, cvc, address } = state.$data;
 
   const setCreditCardNumber = (value) =>
     setData((old) => ({
@@ -60,6 +70,12 @@ export default function CheckoutDialog({ onClose, open, ...other }) {
       cvc: value,
     }));
 
+  const setAddress = (value) =>
+    setData((old) => ({
+      ...old,
+      address: value,
+    }));
+
   const [apiCalling, setApiCalling] = React.useState(false);
 
   const handleCancel = () => {
@@ -71,7 +87,7 @@ export default function CheckoutDialog({ onClose, open, ...other }) {
 
     if (state.$all_errors.length === 0) {
       setApiCalling(true);
-      cart.pay(creditCardNumber, cvc, (success) => {
+      cart.pay(creditCardNumber, cvc, address, (success) => {
         setApiCalling(false);
 
         if (success) onClose(true);
@@ -93,6 +109,22 @@ export default function CheckoutDialog({ onClose, open, ...other }) {
         </Typography>
 
         <Box component="form" onSubmit={handleOk} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="street"
+            label="Indirizzo"
+            name="street"
+            autoFocus
+            value={address}
+            onChange={(props) => setAddress(props.target.value)}
+            onBlur={() => setExplicitField("address", true)}
+          />
+          <ErrorAlert
+            error={state.$errors.address.map((data) => data.$message).join(",")}
+          />
+
           <TextField
             margin="normal"
             required
