@@ -4,7 +4,7 @@ import { PaginationResponse } from './dto/pagination-response.dto';
 
 @Injectable()
 export class PaginationService {
-  private static pageSize = 50;
+  private static pageSize = 10;
 
   async paginate<T>(
     page: number,
