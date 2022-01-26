@@ -87,7 +87,9 @@ const WineList = () => {
 
         <Grid item my="20px" xs={10}>
           <Box sx={{ maxWidth: 300, minWidth: 200, marginX: "auto" }}>
-            <Typography textAlign="center">Prezzo</Typography>
+            <Typography variant="subtitle1">
+              Prezzo (€ {priceRange[0]} - € {priceRange[1]})
+            </Typography>
 
             <Slider
               getAriaLabel={() => "Intervallo di prezzo"}
@@ -124,6 +126,7 @@ const WineList = () => {
           {wines.data.map((item) => (
             <Grid
               item
+              key={item.wine + item.vintage}
               container
               xs={12}
               justifyContent="center"
