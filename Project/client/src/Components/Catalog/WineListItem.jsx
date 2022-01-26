@@ -24,12 +24,13 @@ export default function WineListItem({ wine, cart }) {
     <Paper
       sx={{
         p: 2,
-        margin: "auto",
+        marginX: "auto",
+        marginY: "auto",
         maxWidth: 500,
         flexGrow: 1,
       }}
     >
-      <Grid container spacing={2}>
+      <Grid item container spacing={2}>
         <Grid item>
           <ButtonBase sx={{ width: 128, height: 128 }}>
             <WineImg

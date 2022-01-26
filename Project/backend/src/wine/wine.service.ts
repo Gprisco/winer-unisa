@@ -50,11 +50,19 @@ export class WineService {
     try {
       const where = this.filterWinesHelper.buildFilterWineQuery(filterWines);
 
-      return this.paginationService.paginate(
+      const paginatedData = await this.paginationService.paginate(
         filterWines.page,
         this.wineRepository,
         { where, relations: [...allWineRelations] },
       );
+
+      const query = this.wineRepository.createQueryBuilder();
+      query.select('MAX(price)', 'price');
+      query.where(where);
+
+      const maxPrice = await query.getRawOne();
+
+      return { ...paginatedData, maxPrice: maxPrice ? maxPrice.price || 0 : 0 };
     } catch (error) {
       throw error;
     }
