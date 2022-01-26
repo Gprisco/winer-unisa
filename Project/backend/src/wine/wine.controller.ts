@@ -15,6 +15,9 @@ import { UpdateWineDto } from './dto/update-wine.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guard/jwt';
 import { FilterWine } from './dto/filter-wine.dto';
+import { Roles } from 'src/auth/decorators/role.decorator';
+import { PlatformRole } from 'src/user/role.entity';
+import { RolesGuard } from 'src/auth/guard/role.guard';
 
 @Controller('wine')
 @ApiTags('Wine')
@@ -22,7 +25,8 @@ export class WineController {
   constructor(private readonly wineService: WineService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
+  @Roles(PlatformRole.MANAGER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   create(@Body() createWineDto: CreateWineDto) {
     return this.wineService.create(createWineDto);
@@ -42,7 +46,8 @@ export class WineController {
   }
 
   @Patch(':wine/:vintage')
-  @UseGuards(JwtAuthGuard)
+  @Roles(PlatformRole.MANAGER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   update(
     @Param('wine') wine: string,
@@ -53,7 +58,8 @@ export class WineController {
   }
 
   @Delete(':wine/:vintage')
-  @UseGuards(JwtAuthGuard)
+  @Roles(PlatformRole.MANAGER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   remove(@Param('wine') wine: string, @Param('vintage') vintage: number) {
     return this.wineService.remove(wine, +vintage);
