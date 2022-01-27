@@ -10,6 +10,7 @@ import WineDetailsPage, { wineDetailsRoute } from "./Catalog/WineDetailsPage";
 
 import ResponsiveAppBar from "./ResponsiveAppBar";
 import useAuth from "../Hooks/Auth/useAuth";
+import AddWine, { addWineRoute } from "./Admin/Wines/AddWine";
 
 const Main = () => {
   const auth = useAuth();
@@ -41,6 +42,10 @@ const Main = () => {
             </RequireAuth>
           }
         />
+
+        <Route path="/admin">
+          <Route path={addWineRoute} element={<AddWine />} />
+        </Route>
       </Routes>
     </CartProvider>
   );
