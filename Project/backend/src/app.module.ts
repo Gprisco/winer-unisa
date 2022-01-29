@@ -13,6 +13,9 @@ import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
 import { HelpersModule } from './helpers/helpers.module';
 import { PaymentModule } from './payment/payment.module';
+import { WinegrapeModule } from './winegrape/winegrape.module';
+import { WineryModule } from './winery/winery.module';
+import { WinefamilyModule } from './winefamily/winefamily.module';
 
 @Module({
   imports: [
@@ -45,6 +48,9 @@ import { PaymentModule } from './payment/payment.module';
     OrderModule,
     HelpersModule,
     PaymentModule,
+    WinegrapeModule,
+    WineryModule,
+    WinefamilyModule,
   ],
 })
 export class AppModule implements NestModule {

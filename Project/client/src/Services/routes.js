@@ -19,3 +19,15 @@ export const cartService = {
 export const paymentService = {
   pay: basePath + "/payment",
 };
+
+export const winegrapeService = {
+  winegrapes: basePath + "/winegrape",
+};
+
+export const wineryService = {
+  wineries: basePath + "/winery",
+};
+
+export const winefamilyService = {
+  winefamilies: basePath + "/winefamily",
+};

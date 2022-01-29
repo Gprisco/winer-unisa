@@ -5,10 +5,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Region } from './region.entity';
-import { Winecolor } from './winecolor.entity';
-import { Winedenom } from './winedenom.entity';
-import { Winetype } from './winetype.entity';
+import { Region } from '../../wine/entities/region.entity';
+import { Winecolor } from '../../wine/entities/winecolor.entity';
+import { Winedenom } from '../../wine/entities/winedenom.entity';
+import { Winetype } from '../../wine/entities/winetype.entity';
 
 @Entity({ name: 'w_winefamily' })
 export class Winefamily {

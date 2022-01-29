@@ -12,7 +12,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 
-export default function AddWinegrapeDialog({ winegrapes, open, setOpen }) {
+export default function AddWinegrapeDialog({ winegrapes, open, onClose }) {
   const [winegrapeId, setWinegrapeId] = React.useState(-1);
   const [percentage, setPercentage] = React.useState(100);
 
@@ -20,14 +20,21 @@ export default function AddWinegrapeDialog({ winegrapes, open, setOpen }) {
     setWinegrapeId(+event.target.value || -1);
   };
 
-  const handleClose = (ok) => {
-    // if (ok)
-    // Call setWinegrapeWithPercentage
-    setOpen(false);
+  const handleClose = (cancelled) => {
+    onClose(
+      cancelled,
+      winegrapeId,
+      percentage,
+      (
+        winegrapes.filter((wg) => wg.winegrapeId === winegrapeId)[0] || {
+          winegrape: "",
+        }
+      ).winegrape
+    );
   };
 
   return (
-    <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
+    <Dialog disableEscapeKeyDown open={open}>
       <DialogTitle>Scegli l'uva e la percentuale</DialogTitle>
       <DialogContent>
         <Box component="form" noValidate sx={{ mt: 1 }} autoComplete="off">
@@ -51,7 +58,7 @@ export default function AddWinegrapeDialog({ winegrapes, open, setOpen }) {
                 >
                   <MenuItem value={-1}>Seleziona un'uva</MenuItem>
                   {winegrapes.map((wg) => (
-                    <MenuItem key={wg.id} value={wg.id}>
+                    <MenuItem key={wg.winegrapeId} value={wg.winegrapeId}>
                       {wg.winegrape}
                     </MenuItem>
                   ))}
@@ -78,8 +85,8 @@ export default function AddWinegrapeDialog({ winegrapes, open, setOpen }) {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => handleClose(false)}>Cancel</Button>
-        <Button onClick={() => handleClose(true)}>Ok</Button>
+        <Button onClick={() => handleClose(true)}>Cancel</Button>
+        <Button onClick={() => handleClose(false)}>Ok</Button>
       </DialogActions>
     </Dialog>
   );

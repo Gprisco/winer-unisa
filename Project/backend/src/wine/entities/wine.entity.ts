@@ -6,8 +6,8 @@ import {
   OneToMany,
   PrimaryColumn,
 } from 'typeorm';
-import { Winefamily } from './winefamily.entity';
-import { Winery } from './winery.entity';
+import { Winefamily } from '../../winefamily/entities/winefamily.entity';
+import { Winery } from '../../winery/entities/winery.entity';
 import { WineWinegrape } from '../../wine-winegrape/entities/wineWinegrape.entity';
 
 @Entity({ name: 'w_wine' })
