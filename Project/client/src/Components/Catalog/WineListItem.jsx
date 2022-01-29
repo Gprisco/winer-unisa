@@ -5,8 +5,10 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import ButtonBase from "@mui/material/ButtonBase";
+import Fab from "@mui/material/Fab";
 
 import AddToCart from "./AddToCart";
+import EditIcon from "@mui/icons-material/Edit";
 
 import { capitalize } from "../../Helpers/string";
 import { wineDetailsRoute } from "../../Pages/Catalog/WineDetailsPage";
@@ -19,7 +21,7 @@ export const WineImg = styled("img")({
   maxHeight: "100%",
 });
 
-export default function WineListItem({ wine, cart }) {
+export default function WineListItem({ wine, cart, admin }) {
   return (
     <Paper
       sx={{
@@ -100,12 +102,22 @@ export default function WineListItem({ wine, cart }) {
               </Typography>
             </Grid>
             <Grid item>
-              {cart && wine.availability > 0 && (
-                <AddToCart
-                  wine={capitalize(wine.wine)}
-                  vintage={wine.vintage}
-                  cart={cart}
-                />
+              {!admin && (
+                <>
+                  {cart && wine.availability > 0 && (
+                    <AddToCart
+                      wine={capitalize(wine.wine)}
+                      vintage={wine.vintage}
+                      cart={cart}
+                    />
+                  )}
+                </>
+              )}
+
+              {admin && (
+                <Fab color="primary" aria-label="edit-wine" size="small">
+                  <EditIcon fontSize="small" />
+                </Fab>
               )}
             </Grid>
           </Grid>

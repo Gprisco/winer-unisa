@@ -11,6 +11,8 @@ import WineDetailsPage, { wineDetailsRoute } from "./Catalog/WineDetailsPage";
 import ResponsiveAppBar from "./ResponsiveAppBar";
 import useAuth from "../Hooks/Auth/useAuth";
 import AddWine, { addWineRoute } from "./Admin/Wines/AddWine";
+import AdminWineList, { adminWineList } from "./Admin/Wines/AdminWineList";
+import { adminBaseRoute } from "./Admin/Common/AdminPage";
 
 const Main = () => {
   const auth = useAuth();
@@ -43,7 +45,10 @@ const Main = () => {
           }
         />
 
-        <Route path="/admin">
+        <Route path={adminBaseRoute}>
+          <Route index element={<Navigate to={adminWineList} />} />
+
+          <Route path={adminWineList} element={<AdminWineList />} />
           <Route path={addWineRoute} element={<AddWine />} />
         </Route>
       </Routes>

@@ -3,6 +3,8 @@ import useAuth from "../../../Hooks/Auth/useAuth";
 import { PlatformRole } from "../../../consts/platform.roles";
 import { useEffect } from "react";
 
+export const adminBaseRoute = "/admin";
+
 const AdminPage = ({ children }) => {
   const auth = useAuth();
   const navigate = useNavigate();

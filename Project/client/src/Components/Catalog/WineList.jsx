@@ -13,7 +13,7 @@ import WineListItem from "./WineListItem";
 import Loader from "../Common/Loader";
 import { Typography } from "@mui/material";
 
-const WineList = () => {
+const WineList = ({ admin }) => {
   const cart = useCart();
 
   const onError = (err) => {
@@ -85,22 +85,24 @@ const WineList = () => {
           />
         </Grid>
 
-        <Grid item my="20px" xs={10}>
-          <Box sx={{ maxWidth: 300, minWidth: 200, marginX: "auto" }}>
-            <Typography variant="subtitle1">
-              Prezzo (€ {priceRange[0]} - € {priceRange[1]})
-            </Typography>
+        {!admin && (
+          <Grid item my="20px" xs={10}>
+            <Box sx={{ maxWidth: 300, minWidth: 200, marginX: "auto" }}>
+              <Typography variant="subtitle1">
+                Prezzo (€ {priceRange[0]} - € {priceRange[1]})
+              </Typography>
 
-            <Slider
-              getAriaLabel={() => "Intervallo di prezzo"}
-              value={priceRange}
-              onChange={(event, value) => setPriceRange(value)}
-              onChangeCommitted={(event, value) => setPriceRange(value)}
-              valueLabelDisplay="auto"
-              getAriaValueText={() => `${priceRange[0]}-${priceRange[1]}`}
-            />
-          </Box>
-        </Grid>
+              <Slider
+                getAriaLabel={() => "Intervallo di prezzo"}
+                value={priceRange}
+                onChange={(event, value) => setPriceRange(value)}
+                onChangeCommitted={(event, value) => setPriceRange(value)}
+                valueLabelDisplay="auto"
+                getAriaValueText={() => `${priceRange[0]}-${priceRange[1]}`}
+              />
+            </Box>
+          </Grid>
+        )}
       </Grid>
 
       {wines.data && (
@@ -132,7 +134,7 @@ const WineList = () => {
               justifyContent="center"
               alignItems="center"
             >
-              <WineListItem wine={item} cart={cart} />
+              <WineListItem wine={item} cart={cart} admin={admin} />
             </Grid>
           ))}
 
