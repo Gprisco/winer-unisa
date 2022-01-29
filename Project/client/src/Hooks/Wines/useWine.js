@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { performAuthenticatedRequest } from "../../Helpers/axios";
 import { wineService } from "../../Services/routes";
 
-export default function useWines(wine, vintage, onError) {
+export default function useWine(wine, vintage, onError) {
   const [wineData, setWineData] = useState({});
   const [apiCalling, setApiCalling] = useState(true);
 

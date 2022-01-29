@@ -49,5 +49,6 @@ export default function useWines(onError) {
     setWineSearch,
     priceRange,
     setPriceRange,
+    setWineData,
   ];
 }

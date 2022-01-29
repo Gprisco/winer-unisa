@@ -13,7 +13,7 @@ import WineListItem from "./WineListItem";
 import Loader from "../Common/Loader";
 import { Typography } from "@mui/material";
 
-const WineList = ({ admin }) => {
+const WineList = ({ admin, onDelete }) => {
   const cart = useCart();
 
   const onError = (err) => {
@@ -35,7 +35,20 @@ const WineList = ({ admin }) => {
     setSearch,
     priceRange,
     setPriceRange,
+    setWines,
   ] = useWines(onError);
+
+  const onWineDelete = (wine, vintage) => {
+    onDelete(wine, vintage, (success) => {
+      if (success)
+        setWines({
+          ...wines,
+          data: wines.data.filter(
+            (w) => w.wine === wine && wine.vintage === vintage
+          ),
+        });
+    });
+  };
 
   const [priceRangeState, setPriceRangeState] = useState(null);
 
@@ -134,7 +147,12 @@ const WineList = ({ admin }) => {
               justifyContent="center"
               alignItems="center"
             >
-              <WineListItem wine={item} cart={cart} admin={admin} />
+              <WineListItem
+                wine={item}
+                cart={cart}
+                admin={admin}
+                onDelete={onWineDelete}
+              />
             </Grid>
           ))}
 

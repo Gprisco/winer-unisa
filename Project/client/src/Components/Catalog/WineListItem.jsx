@@ -1,4 +1,5 @@
 import * as React from "react";
+import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
@@ -6,13 +7,19 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import ButtonBase from "@mui/material/ButtonBase";
 import Fab from "@mui/material/Fab";
+import EditIcon from "@mui/icons-material/Edit";
+import Button from "@mui/material/Button";
 
 import AddToCart from "./AddToCart";
-import EditIcon from "@mui/icons-material/Edit";
+import ConfirmationDialogRaw from "../Common/ConfirmationDialog";
+
+import { adminBaseRoute } from "../../Pages/Admin/Common/AdminPage";
+import { deleteWine } from "../Admin/Wines/services/deleteWine";
 
 import { capitalize } from "../../Helpers/string";
 import { wineDetailsRoute } from "../../Pages/Catalog/WineDetailsPage";
 import { catalogRoute } from "../../Pages/Catalog/Catalog";
+import { updateWineRoute } from "../../Pages/Admin/Wines/UpdateWine";
 
 export const WineImg = styled("img")({
   margin: "auto",
@@ -21,7 +28,19 @@ export const WineImg = styled("img")({
   maxHeight: "100%",
 });
 
-export default function WineListItem({ wine, cart, admin }) {
+export default function WineListItem({ wine, cart, admin, onDelete }) {
+  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
+
+  const performDelete = () => {
+    setOpenDeleteDialog(true);
+  };
+
+  const onDeleteDialogClose = (confirmed) => {
+    setOpenDeleteDialog(false);
+
+    if (confirmed) onDelete(wine.wine, wine.vintage);
+  };
+
   return (
     <Paper
       sx={{
@@ -33,6 +52,13 @@ export default function WineListItem({ wine, cart, admin }) {
       }}
     >
       <Grid item container spacing={2}>
+        <ConfirmationDialogRaw
+          open={openDeleteDialog}
+          onClose={onDeleteDialogClose}
+          question={`Sei sicuro di voler eliminare definitivamente il vino ${capitalize(
+            wine.wine
+          )} ${wine.vintage}`}
+        />
         <Grid item>
           <ButtonBase sx={{ width: 128, height: 128 }}>
             <WineImg
@@ -74,16 +100,24 @@ export default function WineListItem({ wine, cart, admin }) {
               </Typography>
             </Grid>
             <Grid item>
-              <Typography sx={{ cursor: "pointer" }} variant="body2">
-                <Link
-                  to={`/${catalogRoute}/${wineDetailsRoute(
-                    wine.wine,
-                    wine.vintage
-                  )}`}
-                >
-                  Dettagli
-                </Link>
-              </Typography>
+              {!admin && (
+                <Typography sx={{ cursor: "pointer" }} variant="body2">
+                  <Link
+                    to={`/${catalogRoute}/${wineDetailsRoute(
+                      wine.wine,
+                      wine.vintage
+                    )}`}
+                  >
+                    Dettagli
+                  </Link>
+                </Typography>
+              )}
+
+              {admin && (
+                <Button variant="error" onClick={() => performDelete()}>
+                  Elimina
+                </Button>
+              )}
             </Grid>
           </Grid>
 
@@ -115,9 +149,17 @@ export default function WineListItem({ wine, cart, admin }) {
               )}
 
               {admin && (
-                <Fab color="primary" aria-label="edit-wine" size="small">
-                  <EditIcon fontSize="small" />
-                </Fab>
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to={
+                    adminBaseRoute +
+                    `/${updateWineRoute(wine.wine, wine.vintage)}`
+                  }
+                >
+                  <Fab color="primary" aria-label="edit-wine" size="small">
+                    <EditIcon fontSize="small" color="white" />
+                  </Fab>
+                </Link>
               )}
             </Grid>
           </Grid>

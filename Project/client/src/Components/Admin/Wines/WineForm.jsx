@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 import Joi from "joi";
 import { useValidator } from "react-joi";
@@ -26,23 +27,44 @@ import {
   winegrapeService,
   wineryService,
 } from "../../../Services/routes";
+import { updateWine } from "./services/updateWine";
+import { adminBaseRoute } from "../../../Pages/Admin/Common/AdminPage";
+import { adminWineList } from "../../../Pages/Admin/Wines/AdminWineList";
 
-const AddWineForm = () => {
+const WineForm = ({
+  wine,
+  vintage,
+  price,
+  availability,
+  wineryId,
+  winefamilyId,
+  wineWinegrapes,
+}) => {
+  const [apiCalling, setApiCalling] = useState(true);
+
   const winegrapes = useWineFeature(winegrapeService.winegrapes);
   const wineries = useWineFeature(wineryService.wineries);
   const winefamilies = useWineFeature(winefamilyService.winefamilies);
 
+  useEffect(() => {
+    if (!!winegrapes && !!wineries && !!winefamilies) setApiCalling(false);
+
+    return () => {};
+  }, [winegrapes, wineries, winefamilies]);
+
   const [openWinegrapeDialog, setOpenWinegrapeDialog] = useState(false);
-  const [chosenWinegrapes, setChosenWinegrapes] = useState([]);
+  const [chosenWinegrapes, setChosenWinegrapes] = useState(
+    wineWinegrapes || []
+  );
 
   const { state, setData, setExplicitField, validate } = useValidator({
     initialData: {
-      wine: "",
-      vintage: new Date().getFullYear(),
-      price: 10,
-      availability: 10,
-      wineryId: -1,
-      winefamilyId: -1,
+      wine: wine || "",
+      vintage: vintage || new Date().getFullYear(),
+      price: price || 10,
+      availability: availability || 10,
+      wineryId: wineryId || -1,
+      winefamilyId: winefamilyId || -1,
     },
     schema: Joi.object({
       wine: Joi.string().min(1).required(),
@@ -97,40 +119,60 @@ const AddWineForm = () => {
     );
   };
 
-  const [apiCalling, setApiCalling] = useState(false);
-
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    await (async () => validate())();
+    validate();
+
+    const responseCb = (successMessage) => (err, _) => {
+      setApiCalling(false);
+
+      if (err)
+        return toast(err.response.data.message[0], {
+          type: toast.TYPE.ERROR,
+        });
+
+      toast(successMessage, { type: toast.TYPE.SUCCESS });
+    };
 
     if (state.$all_errors.length === 0) {
       setApiCalling(true);
-      const { wine, vintage, wineryId, winefamilyId, price, availability } =
-        state.$data;
 
-      await addWine(
-        {
+      if (wine && vintage) {
+        // User is updating wine
+
+        return updateWine(
           wine,
-          vintage: +vintage,
-          wineryId,
-          winefamilyId,
-          price,
-          availability,
+          vintage,
+          {
+            wine: state.$data.wine,
+            vintage: +state.$data.vintage,
+            wineryId: state.$data.wineryId,
+            winefamilyId: state.$data.winefamilyId,
+            price: state.$data.price,
+            availability: state.$data.availability,
+            winegrapes: chosenWinegrapes.map(({ winegrapeId, percentage }) => ({
+              winegrapeId,
+              percentage,
+            })),
+          },
+          responseCb("Vino aggiornato correttamente!")
+        );
+      }
+
+      addWine(
+        {
+          wine: state.$data.wine,
+          vintage: +state.$data.vintage,
+          wineryId: state.$data.wineryId,
+          winefamilyId: state.$data.winefamilyId,
+          price: state.$data.price,
+          availability: state.$data.availability,
           winegrapes: chosenWinegrapes.map(({ winegrapeId, percentage }) => ({
             winegrapeId,
             percentage,
           })),
         },
-        (err, _) => {
-          setApiCalling(false);
-
-          if (err)
-            return toast(err.response.data.message[0], {
-              type: toast.TYPE.ERROR,
-            });
-
-          toast("Vino aggiungo correttamente!", { type: toast.TYPE.SUCCESS });
-        }
+        responseCb("Vino aggiungo correttamente!")
       );
     }
   };
@@ -296,7 +338,12 @@ const AddWineForm = () => {
                 key={wg.winegrapeId}
               >
                 <Typography variant="body1">
-                  {wg.winegrape} - {wg.percentage} %
+                  {
+                    winegrapes.filter(
+                      (wg1) => wg1.winegrapeId === wg.winegrapeId
+                    )[0].winegrape
+                  }{" "}
+                  - {wg.percentage} %
                 </Typography>
 
                 <Button onClick={() => onWinegrapeRemove(wg.winegrapeId)}>
@@ -332,11 +379,22 @@ const AddWineForm = () => {
           sx={{ mt: 3, mb: 2 }}
           disabled={state.$all_errors.length > 0}
         >
-          Crea
+          {wine && vintage ? "Modifica" : "Crea"}
         </LoadingButton>
+
+        <Link to={adminBaseRoute + "/" + adminWineList}>
+          <Button
+            color="error"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Indietro
+          </Button>
+        </Link>
       </Box>
     </Container>
   );
 };
 
-export default AddWineForm;
+export default WineForm;

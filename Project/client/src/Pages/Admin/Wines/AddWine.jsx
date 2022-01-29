@@ -1,4 +1,4 @@
-import AddWineForm from "../../../Components/Admin/Wines/AddWineForm";
+import WineForm from "../../../Components/Admin/Wines/WineForm";
 import PageTitle from "../../../Components/Common/PageTitle";
 import AdminPage from "../Common/AdminPage";
 
@@ -8,7 +8,7 @@ const AddWine = () => {
   return (
     <AdminPage>
       <PageTitle title="Aggiungi un Vino" />
-      <AddWineForm />
+      <WineForm />
     </AdminPage>
   );
 };

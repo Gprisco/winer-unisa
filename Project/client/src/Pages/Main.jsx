@@ -13,6 +13,7 @@ import useAuth from "../Hooks/Auth/useAuth";
 import AddWine, { addWineRoute } from "./Admin/Wines/AddWine";
 import AdminWineList, { adminWineList } from "./Admin/Wines/AdminWineList";
 import { adminBaseRoute } from "./Admin/Common/AdminPage";
+import UpdateWine, { updateWineRoute } from "./Admin/Wines/UpdateWine";
 
 const Main = () => {
   const auth = useAuth();
@@ -50,6 +51,10 @@ const Main = () => {
 
           <Route path={adminWineList} element={<AdminWineList />} />
           <Route path={addWineRoute} element={<AddWine />} />
+          <Route
+            path={updateWineRoute(":wine", ":vintage")}
+            element={<UpdateWine />}
+          />
         </Route>
       </Routes>
     </CartProvider>
