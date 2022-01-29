@@ -22,7 +22,15 @@ const WineDetails = ({ wine }) => {
           <ButtonBase sx={{ width: "auto", height: 512, marginX: "auto" }}>
             <WineImg
               alt="Bottle"
-              src="https://wineboard.io/api/wine/image/10633"
+              src={`https://wineboard.io/api/wine/image/${
+                wine.winefamily.winecolor.winecolorId === 1
+                  ? 2407
+                  : wine.winefamily.winecolor.winecolorId === 2
+                  ? 5066
+                  : wine.winefamily.winecolor.winecolorId === 3
+                  ? 1854
+                  : 2407
+              }`}
             />
           </ButtonBase>
         </Grid>

@@ -35,7 +35,15 @@ export default function WineListItem({ wine, cart }) {
           <ButtonBase sx={{ width: 128, height: 128 }}>
             <WineImg
               alt="Bottle"
-              src="https://wineboard.io/api/wine/image/10633"
+              src={`https://wineboard.io/api/wine/image/${
+                wine.winefamily.winecolor.winecolorId === 1
+                  ? 2407
+                  : wine.winefamily.winecolor.winecolorId === 2
+                  ? 5066
+                  : wine.winefamily.winecolor.winecolorId === 3
+                  ? 1854
+                  : 2407
+              }`}
             />
           </ButtonBase>
         </Grid>
@@ -47,6 +55,9 @@ export default function WineListItem({ wine, cart }) {
               </Typography>
               <Typography variant="body2" gutterBottom>
                 Azienda: {wine.winery.winery}
+              </Typography>
+              <Typography variant="body2" gutterBottom>
+                Colore: {wine.winefamily.winecolor.winecolor}
               </Typography>
               {wine.winegrapes.length > 0 && (
                 <Typography variant="body2" color="text.secondary">
