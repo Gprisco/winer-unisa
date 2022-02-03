@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
@@ -34,7 +34,17 @@ export class AuthService {
     };
   }
 
+  private checkPassword(password: string): boolean {
+    const regex = /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+    return regex.test(password) && password.length >= 8;
+  }
+
   async register(user: CreateUserDto) {
-    return await this.userService.createUser(user);
+    if (this.checkPassword(user.password))
+      return await this.userService.createUser(user);
+
+    throw new BadRequestException(
+      'La password deve essere lunga almeno 8 caratteri, contenere lettere minuscole e maiuscole, almeno 1 numero e almeno 1 carattere speciale',
+    );
   }
 }

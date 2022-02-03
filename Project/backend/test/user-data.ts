@@ -1,6 +1,6 @@
 export const validUser = {
   email: 'test@test.com',
-  password: 'ciaotest01',
+  password: 'Ciaotest01!',
 };
 
 export const invalidUser = {

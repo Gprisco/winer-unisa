@@ -58,6 +58,13 @@ describe('AuthController (e2e)', () => {
       .expect(201);
   });
 
+  it('should fail creating a user', () => {
+    return request(app.getHttpServer())
+      .post('/auth/register')
+      .send(invalidUser)
+      .expect(400);
+  });
+
   it('should issue an access_token', (done) => {
     request(app.getHttpServer())
       .post('/auth/login')
