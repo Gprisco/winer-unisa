@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { UserModule } from '../src/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -48,6 +48,12 @@ describe('AuthController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(
+      new ValidationPipe({
+        transform: true,
+        whitelist: true,
+      }),
+    );
     await app.init();
   });
 
@@ -58,10 +64,27 @@ describe('AuthController (e2e)', () => {
       .expect(201);
   });
 
+  it('should not create the same user', () => {
+    return request(app.getHttpServer())
+      .post('/auth/register')
+      .send(validUser)
+      .expect(400);
+  });
+
   it('should fail creating a user', () => {
     return request(app.getHttpServer())
       .post('/auth/register')
       .send(invalidUser)
+      .expect(400);
+  });
+
+  it('should complain about email format', () => {
+    return request(app.getHttpServer())
+      .post('/auth/register')
+      .send({
+        email: 'notValidemail',
+        password: validUser.password,
+      })
       .expect(400);
   });
 

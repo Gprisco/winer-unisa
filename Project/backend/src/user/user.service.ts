@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from '../auth/dto/CreateUser.dto';
 import { HasherService } from '../hasher/hasher.service';
@@ -49,6 +49,12 @@ export class UserService {
 
   async createUser(user: CreateUserDto): Promise<CreateUserResponse> {
     try {
+      const foundUser = await this.userRepository.findOne({
+        email: user.email,
+      });
+
+      if (foundUser) throw new BadRequestException('Email già esistente');
+
       const hash = await this.hasherService.hash(user.password);
 
       const createdUser = this.userRepository.create({
@@ -76,7 +82,7 @@ export class UserService {
       return { success: true, user: createdUser };
     } catch (error) {
       Logger.error(error);
-      return { success: false, error };
+      throw error;
     }
   }
 }
