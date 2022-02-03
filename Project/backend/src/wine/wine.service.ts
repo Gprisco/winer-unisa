@@ -5,9 +5,9 @@ import { CreateWineDto } from './dto/create-wine.dto';
 import { FilterWine } from './dto/filter-wine.dto';
 import { UpdateWineDto } from './dto/update-wine.dto';
 import { Wine } from './entities/wine.entity';
-import { WineWinegrapeService } from 'src/wine-winegrape/wine-winegrape.service';
+import { WineWinegrapeService } from '../wine-winegrape/wine-winegrape.service';
 import { FilterWinesHelper } from './filter-wine.helper';
-import { PaginationService } from 'src/helpers/pagination.service';
+import { PaginationService } from '../helpers/pagination.service';
 import { allWineRelations } from './common/wine.all-relations';
 
 @Injectable()

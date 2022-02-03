@@ -13,11 +13,11 @@ import { WineService } from './wine.service';
 import { CreateWineDto } from './dto/create-wine.dto';
 import { UpdateWineDto } from './dto/update-wine.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guard/jwt';
+import { JwtAuthGuard } from '../auth/guard/jwt';
 import { FilterWine } from './dto/filter-wine.dto';
-import { Roles } from 'src/auth/decorators/role.decorator';
-import { PlatformRole } from 'src/user/role.entity';
-import { RolesGuard } from 'src/auth/guard/role.guard';
+import { Roles } from '../auth/decorators/role.decorator';
+import { PlatformRole } from '../user/role.entity';
+import { RolesGuard } from '../auth/guard/role.guard';
 
 @Controller('wine')
 @ApiTags('Wine')

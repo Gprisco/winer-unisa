@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { UserPayloadDto } from 'src/auth/dto/UserPayload.dto';
-import { JwtAuthGuard } from 'src/auth/guard/jwt';
+import { UserPayloadDto } from '../auth/dto/UserPayload.dto';
+import { JwtAuthGuard } from '../auth/guard/jwt';
 import { PaymentDto } from './dto/payment.dto';
 import { PaymentService } from './payment.service';
 

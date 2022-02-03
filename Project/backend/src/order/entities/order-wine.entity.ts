@@ -1,4 +1,4 @@
-import { Wine } from 'src/wine/entities/wine.entity';
+import { Wine } from '../../wine/entities/wine.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Order } from './order.entity';
 

@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guard/jwt';
+import { JwtAuthGuard } from '../auth/guard/jwt';
 
 @Controller('order')
 @ApiBearerAuth()

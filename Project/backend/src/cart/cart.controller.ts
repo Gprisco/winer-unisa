@@ -10,8 +10,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiParam, ApiTags } from '@nestjs/swagger';
-import { UserPayloadDto } from 'src/auth/dto/UserPayload.dto';
-import { JwtAuthGuard } from 'src/auth/guard/jwt';
+import { UserPayloadDto } from '../auth/dto/UserPayload.dto';
+import { JwtAuthGuard } from '../auth/guard/jwt';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto, UpdateCartItemParams } from './dto/update-cart.dto';

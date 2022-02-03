@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CartService } from 'src/cart/cart.service';
-import { OrderService } from 'src/order/order.service';
+import { CartService } from '../cart/cart.service';
+import { OrderService } from '../order/order.service';
 
 @Injectable()
 export class PaymentService {

@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateUserDto } from 'src/auth/dto/CreateUser.dto';
-import { HasherService } from 'src/hasher/hasher.service';
-import { User } from 'src/user/user.entity';
+import { CreateUserDto } from '../auth/dto/CreateUser.dto';
+import { HasherService } from '../hasher/hasher.service';
+import { User } from '../user/user.entity';
 import { Repository } from 'typeorm';
 import { PlatformRole, Role } from './role.entity';
 

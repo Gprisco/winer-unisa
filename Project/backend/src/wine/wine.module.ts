@@ -3,9 +3,9 @@ import { WineService } from './wine.service';
 import { WineController } from './wine.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Wine } from './entities/wine.entity';
-import { WineWinegrapeModule } from 'src/wine-winegrape/wine-winegrape.module';
+import { WineWinegrapeModule } from '../wine-winegrape/wine-winegrape.module';
 import { FilterWinesHelper } from './filter-wine.helper';
-import { HelpersModule } from 'src/helpers/helpers.module';
+import { HelpersModule } from '../helpers/helpers.module';
 
 @Module({
   imports: [

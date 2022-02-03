@@ -5,8 +5,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { allWineRelations } from 'src/wine/common/wine.all-relations';
-import { WineService } from 'src/wine/wine.service';
+import { allWineRelations } from '../wine/common/wine.all-relations';
+import { WineService } from '../wine/wine.service';
 import { Repository } from 'typeorm';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';

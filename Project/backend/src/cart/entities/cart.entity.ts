@@ -1,4 +1,4 @@
-import { Wine } from 'src/wine/entities/wine.entity';
+import { Wine } from '../../wine/entities/wine.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity('c_cart_item')
