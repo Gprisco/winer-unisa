@@ -118,6 +118,13 @@ describe('AuthController (e2e)', () => {
       .expect(200);
   });
 
+  it('should return 401 for invalid token', () => {
+    return request(app.getHttpServer())
+      .get('/auth/profile')
+      .set('Authorization', 'Bearer not-valid-token')
+      .expect(401);
+  });
+
   afterAll(async () => {
     const connection = app.get(Connection);
     await connection.close();
