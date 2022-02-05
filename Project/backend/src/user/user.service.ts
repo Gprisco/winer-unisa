@@ -62,26 +62,49 @@ export class UserService {
         password: hash,
       });
 
-      let defaultRole = await this.roleRepository.findOne({
-        where: { roleName: PlatformRole.DEF },
-      });
+      const roles = await this.roleRepository.find();
 
-      if (!defaultRole) {
+      const defaultRoles = roles.filter(
+        (role) => role.roleName === PlatformRole.DEF,
+      );
+      const managerRoles = roles.filter(
+        (role) => role.roleName === PlatformRole.MANAGER,
+      );
+
+      let defaultRole = defaultRoles.length > 0 ? defaultRoles[0] : null;
+      let managerRole = managerRoles.length > 0 ? managerRoles[0] : null;
+
+      if (!defaultRole)
         defaultRole = this.roleRepository.create({
           roleName: PlatformRole.DEF,
-          roleDescription: '',
+          roleDescription: 'This user can use Winer',
         });
 
-        await this.roleRepository.save(defaultRole);
-      }
+      if (!managerRole)
+        managerRole = this.roleRepository.create({
+          roleName: PlatformRole.MANAGER,
+          roleDescription: 'This user can manage wine related data',
+        });
+
+      try {
+        await this.roleRepository.save([defaultRole, managerRole]);
+      } catch (error) {}
 
       createdUser.roles = [defaultRole];
+
+      const admin = await this.userRepository
+        .createQueryBuilder('admin')
+        .innerJoin('a_user_role', 'userRole', 'userRole.roleID = :roleID', {
+          roleID: managerRole.roleID,
+        })
+        .getOne();
+
+      if (!admin) createdUser.roles.push(managerRole);
 
       await this.userRepository.save(createdUser);
 
       return { success: true, user: createdUser };
     } catch (error) {
-      Logger.error(error);
       throw error;
     }
   }
