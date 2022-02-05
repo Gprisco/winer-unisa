@@ -20,7 +20,7 @@ export class Order {
   @Column('int')
   userID: number;
 
-  @Column('boolean')
+  @Column('boolean', { default: false })
   confirmed: boolean;
 
   @Column('varchar')
