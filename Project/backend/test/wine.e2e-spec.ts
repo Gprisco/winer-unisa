@@ -4,15 +4,17 @@ import * as request from 'supertest';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import env from '../src/config/env';
-import { CartModule } from '../src/cart/cart.module';
 import { AuthModule } from '../src/auth/auth.module';
+import env from '../src/config/env';
+import * as assert from 'assert';
 import { Connection } from 'typeorm';
+import { WineModule } from '../src/wine/wine.module';
 import initTestApp from './beforeAll';
+import { CreateWineDto } from '../src/wine/dto/create-wine.dto';
 import performLogin from './helpers/performLogin';
-import { assert } from 'console';
+import { UpdateWineDto } from 'src/wine/dto/update-wine.dto';
 
-describe('CartController (e2e)', () => {
+describe('WineController (e2e)', () => {
   let app: INestApplication;
   let bearerToken: string;
   jest.setTimeout(60000);
@@ -21,7 +23,7 @@ describe('CartController (e2e)', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         AuthModule,
-        CartModule,
+        WineModule,
         ConfigModule.forRoot({
           isGlobal: true,
           ignoreEnvFile: false,
@@ -52,68 +54,59 @@ describe('CartController (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await initTestApp(app);
 
-    const loginReponse = await performLogin(app);
-    bearerToken = 'Bearer ' + loginReponse.body.access_token;
+    const loginResponse = await performLogin(app);
+    bearerToken = 'Bearer ' + loginResponse.body.access_token;
   });
 
-  it('should get an empty cart', async () => {
+  it('should get the catalog', async () => {
     const response = await request(app.getHttpServer())
-      .get('/cart')
-      .set('Authorization', bearerToken)
+      .get('/wine?page=1')
       .expect(200);
 
-    assert(response.body instanceof Array);
+    assert(response.body.currentPage === 1);
+    assert(response.body.data instanceof Array);
   });
 
-  it('should fail adding a non-existing wine to the cart', async () => {
+  it('should create a wine', () => {
     return request(app.getHttpServer())
-      .post('/cart')
+      .post('/wine')
       .set('Authorization', bearerToken)
       .send({
-        winePK: 'non-existing-wine',
-        vintage: 2020,
-        quantity: 1,
-      })
-      .expect(404);
-  });
-
-  it('should add a wine to the cart', () => {
-    return request(app.getHttpServer())
-      .post('/cart')
-      .set('Authorization', bearerToken)
-      .send({
-        winePK: 'capatosta',
-        vintage: 2016,
-        quantity: 1,
-      })
+        wine: 'nuovo-vino',
+        vintage: 2017,
+        winefamilyId: 297,
+        wineryId: 546,
+        winegrapes: [],
+        price: 10.0,
+        availability: 40,
+      } as CreateWineDto)
       .expect(201);
   });
 
-  it('should not update a wine quantity in the cart (quantity > availability)', () => {
-    return request(app.getHttpServer())
-      .patch('/cart/capatosta/2016')
-      .set('Authorization', bearerToken)
-      .send({
-        quantity: 6,
-      })
-      .expect(400);
-  });
-
-  it('should update a wine quantity', async () => {
-    const res = await request(app.getHttpServer())
-      .patch('/cart/capatosta/2016')
-      .set('Authorization', bearerToken)
-      .send({
-        quantity: 2,
-      })
+  it('should get wine details', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/wine/capatosta/2016')
       .expect(200);
 
-    assert(res.body.quantity === 2);
+    assert(response.body.wine === 'capatosta');
+    assert(response.body.vintage === 2016);
+    return;
   });
 
-  it('should delete an item from the cart', () => {
+  it('should update an existing wine', () => {
     return request(app.getHttpServer())
-      .delete('/cart/capatosta/2016')
+      .patch(`/wine/capatosta/2016`)
+      .set('Authorization', bearerToken)
+      .send({
+        winefamilyId: 297,
+        wineryId: 546,
+      } as UpdateWineDto)
+      .expect(200);
+  });
+
+  it('should delete a wine', () => {
+    return request(app.getHttpServer())
+      .delete('/wine/nuovo-vino/2017')
       .set('Authorization', bearerToken)
       .expect(200);
   });

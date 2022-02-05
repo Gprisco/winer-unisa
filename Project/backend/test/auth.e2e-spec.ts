@@ -11,6 +11,7 @@ import { HasherModule } from '../src/hasher/hasher.module';
 import * as assert from 'assert';
 import { invalidUser, validUser } from './user-data';
 import { Connection } from 'typeorm';
+import { PlatformRole } from '../src/user/role.entity';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
@@ -57,7 +58,7 @@ describe('AuthController (e2e)', () => {
     await app.init();
   });
 
-  it('should create a user', () => {
+  it('should create an admin user', () => {
     return request(app.getHttpServer())
       .post('/auth/register')
       .send(validUser)
@@ -107,15 +108,27 @@ describe('AuthController (e2e)', () => {
       .expect(401);
   });
 
-  it('should return a user profile', async () => {
-    const response = await request(app.getHttpServer())
+  it('should return a manager user profile', (done) => {
+    const responsePromise = request(app.getHttpServer())
       .post('/auth/login')
       .send(validUser);
 
-    return request(app.getHttpServer())
-      .get('/auth/profile')
-      .set('Authorization', 'Bearer ' + response.body.access_token)
-      .expect(200);
+    responsePromise
+      .then((response) => {
+        request(app.getHttpServer())
+          .get('/auth/profile')
+          .set('Authorization', 'Bearer ' + response.body.access_token)
+          .expect(200)
+          .then((profile) => {
+            assert(
+              profile.body.roles.includes(PlatformRole.MANAGER),
+              'The profile does not contin a manager platform role',
+            );
+            done();
+          })
+          .catch((err) => done(err));
+      })
+      .catch((err) => done(err));
   });
 
   it('should return 401 for invalid token', () => {
