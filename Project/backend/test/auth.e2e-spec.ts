@@ -108,7 +108,7 @@ describe('AuthController (e2e)', () => {
       .expect(401);
   });
 
-  it('should return a manager user profile', (done) => {
+  it('should return an admin user profile', (done) => {
     const responsePromise = request(app.getHttpServer())
       .post('/auth/login')
       .send(validUser);
