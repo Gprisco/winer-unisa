@@ -33,10 +33,10 @@ export default function ConfirmationDialogRaw({
         <Typography variant="body1">{question}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleCancel}>
+        <Button id="dialog-cancel" autoFocus onClick={handleCancel}>
           Annulla
         </Button>
-        <Button onClick={handleOk}>Ok</Button>
+        <Button id="dialog-confirm" onClick={handleOk}>Ok</Button>
       </DialogActions>
     </Dialog>
   );

@@ -44,7 +44,7 @@ export class AuthService {
       return await this.userService.createUser(user);
 
     throw new BadRequestException(
-      'La password deve essere lunga almeno 8 caratteri, contenere lettere minuscole e maiuscole, almeno 1 numero e almeno 1 carattere speciale',
+      'La password deve essere lunga almeno 8 caratteri, contenere lettere minuscole e maiuscole, almeno 1 numero o 1 carattere speciale',
     );
   }
 }

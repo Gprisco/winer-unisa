@@ -67,7 +67,7 @@ const WineForm = ({
       winefamilyId: winefamilyId || -1,
     },
     schema: Joi.object({
-      wine: Joi.string().min(1).required(),
+      wine: Joi.string().min(3).required(),
       vintage: Joi.number().integer().min(0).required(),
       price: Joi.number().min(0.01).required(),
       availability: Joi.number().integer().min(0).required(),
@@ -179,6 +179,7 @@ const WineForm = ({
 
   const setState = (newState) => {
     setData((old) => ({ ...old, ...newState }));
+    validate();
   };
 
   return (
@@ -360,7 +361,10 @@ const WineForm = ({
             alignItems="center"
             xs={12}
           >
-            <Button onClick={() => setOpenWinegrapeDialog(true)}>
+            <Button
+              id="add-winegrape-btn"
+              onClick={() => setOpenWinegrapeDialog(true)}
+            >
               Aggiungi Uva
             </Button>
           </Grid>
@@ -372,6 +376,7 @@ const WineForm = ({
         </Grid>
 
         <LoadingButton
+          id={wine && vintage ? "wine-update" : "wine-create"}
           type="submit"
           loading={apiCalling}
           fullWidth

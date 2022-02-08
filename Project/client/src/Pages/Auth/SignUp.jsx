@@ -23,9 +23,7 @@ const SignUp = () => {
     console.error(errorResponse);
 
     setApiCalling(false);
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
+    setError(errorResponse.data.message);
   };
 
   const handleSubmit = (event) => {

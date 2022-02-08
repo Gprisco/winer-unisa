@@ -57,7 +57,11 @@ const ResponsiveAppBar = () => {
   };
 
   const navLink = (page) => (
-    <MenuItem key={page.title} onClick={() => handleCloseNavMenu(page.route)}>
+    <MenuItem
+      id={page.title}
+      key={page.title}
+      onClick={() => handleCloseNavMenu(page.route)}
+    >
       <Typography textAlign="center">{page.title}</Typography>
     </MenuItem>
   );

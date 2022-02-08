@@ -17,6 +17,7 @@ const CartItemQuantity = ({ cartItem, onUpdate }) => {
     >
       <Grid item container justifyContent="center" alignItems="center" xs>
         <Fab
+          id={`less-${cartItem.winePK}-${cartItem.vintage}`}
           size="small"
           color="primary"
           onClick={() =>
@@ -28,11 +29,17 @@ const CartItemQuantity = ({ cartItem, onUpdate }) => {
       </Grid>
 
       <Grid item xs textAlign="center">
-        <Typography textAlign="center">{cartItem.quantity}</Typography>
+        <Typography
+          id={`quantity-${cartItem.winePK}-${cartItem.vintage}`}
+          textAlign="center"
+        >
+          {cartItem.quantity}
+        </Typography>
       </Grid>
 
       <Grid item container justifyContent="center" alignItems="center" xs>
         <Fab
+          id={`more-${cartItem.winePK}-${cartItem.vintage}`}
           size="small"
           color="primary"
           onClick={() =>
