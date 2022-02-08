@@ -159,6 +159,7 @@ export default function CheckoutDialog({ onClose, open, ...other }) {
           />
 
           <LoadingButton
+            id="perform-payment"
             type="submit"
             loading={apiCalling}
             fullWidth

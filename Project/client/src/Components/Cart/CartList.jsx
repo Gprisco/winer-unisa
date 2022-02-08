@@ -66,7 +66,7 @@ const CartList = () => {
 
       {cart.cart.length === 0 && (
         <Grid item xs>
-          <Typography variant="h6" textAlign="center">
+          <Typography id="empty-cart" variant="h6" textAlign="center">
             Il Carrello è vuoto
           </Typography>
         </Grid>
@@ -95,7 +95,17 @@ const CartList = () => {
       <CartTotal items={cart.cart} />
 
       <Grid item xs={12}>
-        <Button variant="contained" onClick={() => setOpenCheckoutDialog(true)}>
+        <Button
+          id="go-to-checkout"
+          variant="contained"
+          onClick={() => {
+            if (cart.cart.length > 0) setOpenCheckoutDialog(true);
+            else
+              toast("Aggiungi prima un vino al carrello!", {
+                type: toast.TYPE.ERROR,
+              });
+          }}
+        >
           Procedi al Checkout
         </Button>
       </Grid>

@@ -1,5 +1,4 @@
 import * as React from "react";
-import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
@@ -14,7 +13,6 @@ import AddToCart from "./AddToCart";
 import ConfirmationDialogRaw from "../Common/ConfirmationDialog";
 
 import { adminBaseRoute } from "../../Pages/Admin/Common/AdminPage";
-import { deleteWine } from "../Admin/Wines/services/deleteWine";
 
 import { capitalize } from "../../Helpers/string";
 import { wineDetailsRoute } from "../../Pages/Catalog/WineDetailsPage";
@@ -79,7 +77,7 @@ export default function WineListItem({ wine, cart, admin, onDelete }) {
           <Grid item container xs={10} direction="column" spacing={5}>
             <Grid item xs>
               <Typography gutterBottom variant="title1" component="div">
-                {capitalize(wine.wine)}
+                {capitalize(wine.wine)} {wine.vintage}
               </Typography>
               <Typography variant="body2" gutterBottom>
                 Azienda: {wine.winery.winery}
@@ -114,7 +112,11 @@ export default function WineListItem({ wine, cart, admin, onDelete }) {
               )}
 
               {admin && (
-                <Button variant="error" onClick={() => performDelete()}>
+                <Button
+                  id={`delete-${wine.wine}-${wine.vintage}`}
+                  variant="error"
+                  onClick={() => performDelete()}
+                >
                   Elimina
                 </Button>
               )}

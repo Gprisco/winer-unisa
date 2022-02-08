@@ -67,7 +67,7 @@ const WineForm = ({
       winefamilyId: winefamilyId || -1,
     },
     schema: Joi.object({
-      wine: Joi.string().min(1).required(),
+      wine: Joi.string().min(3).required(),
       vintage: Joi.number().integer().min(0).required(),
       price: Joi.number().min(0.01).required(),
       availability: Joi.number().integer().min(0).required(),
@@ -218,7 +218,7 @@ const WineForm = ({
               type="number"
               id="vintage"
               value={state.$data.vintage}
-              onChange={(e) => setState({ vintage: e.target.value })}
+              onChange={(e) => setState({ vintage: +e.target.value })}
               error={state.$errors.vintage.length > 0}
               helperText={state.$errors.vintage
                 .map((data) => data.$message)
@@ -236,7 +236,7 @@ const WineForm = ({
               type="number"
               id="price"
               value={state.$data.price}
-              onChange={(e) => setState({ price: e.target.value })}
+              onChange={(e) => setState({ price: +e.target.value })}
               error={state.$errors.price.length > 0}
               helperText={state.$errors.price
                 .map((data) => data.$message)
@@ -253,7 +253,7 @@ const WineForm = ({
               type="number"
               id="availability"
               value={state.$data.availability}
-              onChange={(e) => setState({ availability: e.target.value })}
+              onChange={(e) => setState({ availability: +e.target.value })}
               error={state.$errors.availability.length > 0}
               helperText={state.$errors.availability
                 .map((data) => data.$message)
@@ -360,7 +360,7 @@ const WineForm = ({
             alignItems="center"
             xs={12}
           >
-            <Button onClick={() => setOpenWinegrapeDialog(true)}>
+            <Button id="add-winegrape-btn" onClick={() => setOpenWinegrapeDialog(true)}>
               Aggiungi Uva
             </Button>
           </Grid>
@@ -372,6 +372,7 @@ const WineForm = ({
         </Grid>
 
         <LoadingButton
+          id={wine && vintage ? "wine-update" : "wine-create"}
           type="submit"
           loading={apiCalling}
           fullWidth

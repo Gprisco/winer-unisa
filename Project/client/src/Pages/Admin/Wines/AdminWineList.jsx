@@ -37,7 +37,7 @@ const AdminWineList = () => {
           alignItems="center"
         >
           <Button>
-            <Link to={adminBaseRoute + "/" + addWineRoute}>Aggiungi Vino</Link>
+            <Link id="add-wine-link" to={adminBaseRoute + "/" + addWineRoute}>Aggiungi Vino</Link>
           </Button>
         </Grid>
       </Grid>

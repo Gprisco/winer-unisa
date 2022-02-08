@@ -50,6 +50,7 @@ export default function AddWinegrapeDialog({ winegrapes, open, onClose }) {
                   Uva
                 </InputLabel>
                 <Select
+                  id="winegrape-select"
                   labelId="winegrapeId-label"
                   label="Uva"
                   value={winegrapeId}
@@ -85,8 +86,8 @@ export default function AddWinegrapeDialog({ winegrapes, open, onClose }) {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => handleClose(true)}>Cancel</Button>
-        <Button onClick={() => handleClose(false)}>Ok</Button>
+        <Button id="winegrape-cancel" onClick={() => handleClose(true)}>Cancel</Button>
+        <Button id="winegrape-add" onClick={() => handleClose(false)}>Ok</Button>
       </DialogActions>
     </Dialog>
   );
