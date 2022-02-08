@@ -4,7 +4,7 @@ const ErrorAlert = ({ error, onCloseError }) => {
   return (
     <>
       {!!error && (
-        <Alert severity="error" onClose={onCloseError} sx={{ marginY: "10px" }}>
+        <Alert id="error-alert" severity="error" onClose={onCloseError} sx={{ marginY: "10px" }}>
           {error}
         </Alert>
       )}

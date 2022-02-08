@@ -72,7 +72,7 @@ export default function AuthProvider({ children }) {
 
   function signUp(email, password, callback) {
     return authProvider.signUp(email, password, (err) => {
-      console.error(err);
+      if(err) return callback(err);
 
       return authProvider.signIn(email, password, (err, user) => {
         if (err) return callback(err);
