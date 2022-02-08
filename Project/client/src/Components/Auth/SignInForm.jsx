@@ -14,10 +14,6 @@ import ErrorAlert from "../Common/ErrorAlert";
 
 import { signUpRoute } from "../../Pages/Auth/SignUp";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-const theme = createTheme();
-
 export default function SignInForm({
   email,
   password,
@@ -29,71 +25,67 @@ export default function SignInForm({
   apiCalling,
 }) {
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Accedi
+        </Typography>
+        <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={(props) => onEmail(props.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(props) => onPassword(props.currentTarget.value)}
+          />
+          <LoadingButton
+            type="submit"
+            loading={apiCalling}
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
             Accedi
-          </Typography>
-          <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={email}
-              onChange={(props) => onEmail(props.target.value)}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(props) => onPassword(props.currentTarget.value)}
-            />
-            <LoadingButton
-              type="submit"
-              loading={apiCalling}
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Accedi
-            </LoadingButton>
-
-            <ErrorAlert error={error} onCloseError={onCloseError} />
-
-            <Grid container sx={{ justifyContent: "center" }}>
-              <Grid item>
-                <Link href={signUpRoute} variant="body2">
-                  {"Non hai un account? Registrati"}
-                </Link>
-              </Grid>
+          </LoadingButton>
+          <ErrorAlert error={error} onCloseError={onCloseError} />
+          <Grid container sx={{ justifyContent: "center" }}>
+            <Grid item>
+              <Link href={signUpRoute} variant="body2">
+                {"Non hai un account? Registrati"}
+              </Link>
             </Grid>
-          </Box>
+          </Grid>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+      </Box>
+      <Copyright sx={{ mt: 8, mb: 4 }} />
+    </Container>
   );
 }
